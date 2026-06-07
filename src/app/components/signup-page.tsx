@@ -1,20 +1,29 @@
 import { useState } from "react";
 
+
 interface SignupPageProps {
   onBackToLogin: () => void;
   onAccountCreated: () => void;
 }
 
 export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
-  const [firstname, setFirstname] = useState("")
-  const [lastname, setLastname] = useState("")
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Sign up submitted:", { username, password, confirmPassword, firstname, lastname });
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
+
+    console.log("Sign up submitted:", { firstName, lastName, username, password, confirmPassword });
     onAccountCreated();
   };
 
@@ -31,114 +40,114 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
       </div>
 
       {/* SIGN UP label */}
-      <div className="absolute top-8 left-8 bg-[#00004d] text-white px-5 py-2 rounded-full" style={{ fontSize: '13px', fontWeight: '700' }}>
+      <div className="absolute top-8 left-8 bg-[#00004d] text-white px-5 py-2 rounded-full shadow-lg" style={{ fontSize: '13px', fontWeight: '700' }}>
         SIGN UP
       </div>
 
       {/* Sign Up Card */}
-      <div className="w-full max-w-sm px-6 relative z-10">
-        <div className="bg-[#00004d] rounded-2xl px-8 py-12 shadow-2xl">
-          <h1 className="text-white text-center mb-8" style={{ fontSize: '26px', fontWeight: '700', letterSpacing: '0.5px' }}>
-            SIGN UP
-          </h1>
+      <div className="w-full max-w-md px-6 relative z-10">
+        <div className="bg-[#00004d] rounded-3xl px-10 py-10 shadow-2xl">
+          <div className="text-center mb-8">
+            <h1 className="text-white mb-2" style={{ fontSize: '24px', fontWeight: '700', letterSpacing: '0.5px' }}>
+              Create Account
+            </h1>
+            <p className="text-white opacity-80" style={{ fontSize: '14px', fontWeight: '400' }}>
+              Sign up to get started
+            </p>
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="flex items-center gap-0">
-              <label htmlFor="username" className="text-white text-sm" style={{ fontWeight: '600', marginRight: '0' }}>
-                USERNAME:
-              </label>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm text-center" style={{ fontWeight: '600' }}>
+                {error}
+              </div>
+            )}
+
+            <div>
+              <input
+                id="firstName"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="First Name"
+                className="w-full rounded-lg px-4 py-2.5 outline-none text-sm bg-white shadow-sm border-2 border-transparent focus:border-blue-400 transition-colors"
+                style={{ fontWeight: '400' }}
+                required
+              />
+            </div>
+
+            <div>
+              <input
+                id="lastName"
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Last Name"
+                className="w-full rounded-lg px-4 py-2.5 outline-none text-sm bg-white shadow-sm border-2 border-transparent focus:border-blue-400 transition-colors"
+                style={{ fontWeight: '400' }}
+                required
+              />
+            </div>
+
+            <div>
               <input
                 id="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="flex-1 rounded px-2 py-1 outline-none text-sm bg-white ml-1"
+                placeholder="Email/Username"
+                className="w-full rounded-lg px-4 py-2.5 outline-none text-sm bg-white shadow-sm border-2 border-transparent focus:border-blue-400 transition-colors"
                 style={{ fontWeight: '400' }}
                 required
               />
             </div>
 
-            <div className="flex items-center gap-0">
-              <label htmlFor="firstname" className="text-white text-sm" style={{ fontWeight: '600', marginRight: '0' }}>
-                FIRSTNAME:
-              </label>
-              <input
-                id="firstname"
-                type="text"
-                value={firstname}
-                onChange={(e) => setFirstname(e.target.value)}
-                className="flex-1 rounded px-2 py-1 outline-none text-sm bg-white ml-1"
-                style={{ fontWeight: '400' }}
-                required
-              />
-            </div>
-
-            <div className="flex items-center gap-0">
-              <label htmlFor="lastname" className="text-white text-sm" style={{ fontWeight: '600', marginRight: '0' }}>
-                LASTNAME:
-              </label>
-              <input
-                id="lastname"
-                type="text"
-                value={lastname}
-                onChange={(e) => setLastname(e.target.value)}
-                className="flex-1 rounded px-2 py-1 outline-none text-sm bg-white ml-1"
-                style={{ fontWeight: '400' }}
-                required
-              />
-            </div>
-
-            <div className="flex items-center gap-0">
-              <label htmlFor="password" className="text-white text-sm" style={{ fontWeight: '600', marginRight: '0' }}>
-                PASSWORD:
-              </label>
+            <div>
               <input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="flex-1 rounded px-2 py-1 outline-none text-sm bg-white ml-1"
+                placeholder="Password"
+                className="w-full rounded-lg px-4 py-2.5 outline-none text-sm bg-white shadow-sm border-2 border-transparent focus:border-blue-400 transition-colors"
                 style={{ fontWeight: '400' }}
                 required
               />
             </div>
 
-            <div className="flex items-center gap-0">
-              <label htmlFor="confirmPassword" className="text-white text-sm" style={{ fontWeight: '600', marginRight: '0' }}>
-                CONFIRM PASSWORD:
-              </label>
+            <div>
               <input
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="flex-1 rounded px-2 py-1 outline-none text-sm bg-white ml-1"
+                placeholder="Confirm Password"
+                className="w-full rounded-lg px-4 py-2.5 outline-none text-sm bg-white shadow-sm border-2 border-transparent focus:border-blue-400 transition-colors"
                 style={{ fontWeight: '400' }}
                 required
               />
             </div>
 
-            <div className="pt-6 flex items-center justify-between gap-2">
-              <button
-                type="button"
-                onClick={onBackToLogin}
-                className="text-white text-sm hover:underline"
-                style={{ fontWeight: '400' }}
-              >
-                Or Log In
-              </button>
+            <button
+              type="submit"
+              className="w-full bg-white text-[#00004d] rounded-lg px-6 py-2.5 hover:bg-gray-100 transition-all shadow-md mt-6"
+              style={{ fontWeight: '700', fontSize: '14px' }}
+            >
+              Create Account
+            </button>
 
-              <button
-                type="submit"
-                className="bg-white text-[#00004d] rounded px-4 py-1.5 hover:bg-gray-100 transition-colors text-xs"
-                style={{ fontWeight: '700' }}
-              >
-                CREATE ACCOUNT
-              </button>
-              
-            </div>
-
-            <div className="text-center text-white text-xs pt-2" style={{ fontWeight: '400' }}>
+            <div className="text-center">
+              <p className="text-white text-sm">
+                Already have an account?{' '}
+                <button
+                  type="button"
+                  onClick={onBackToLogin}
+                  className="hover:underline"
+                  style={{ fontWeight: '600' }}
+                >
+                  Log in
+                </button>
+              </p>
             </div>
           </form>
         </div>
