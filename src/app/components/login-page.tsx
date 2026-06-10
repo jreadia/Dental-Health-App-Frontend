@@ -2,7 +2,7 @@ import { useState } from "react";
 
 interface LoginPageProps {
   onSignUpClick: () => void;
-  onLoginSubmit: () => void;
+  onLoginSubmit: (username: string, password: string) => void;
 }
 
 const inputClass =
@@ -14,8 +14,7 @@ export function LoginPage({ onSignUpClick, onLoginSubmit }: LoginPageProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login submitted:", { username, password });
-    onLoginSubmit();
+    onLoginSubmit(username, password);
   };
 
   return (
@@ -35,6 +34,7 @@ export function LoginPage({ onSignUpClick, onLoginSubmit }: LoginPageProps) {
         />
       </div>
 
+<<<<<<< HEAD
       {/* LOGIN PAGE badge */}
       <div
         className="absolute top-8 left-8 bg-[#00004d] text-white px-5 py-2 rounded-full shadow-lg z-20"
@@ -59,24 +59,62 @@ export function LoginPage({ onSignUpClick, onLoginSubmit }: LoginPageProps) {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-3">
+=======
+      {/* LOGIN PAGE label */}
+      <div className="absolute top-8 left-8 bg-[#00004d] text-white px-5 py-2 rounded-full" style={{ fontSize: '13px', fontWeight: '700' }}>
+        LOGIN PAGE
+      </div>
+
+      {/* Login Card */}
+      <div className="w-full max-w-sm px-6 relative z-10">
+        <div className="bg-[#00004d] rounded-2xl px-8 py-12 shadow-2xl">
+          <h1 className="text-white text-center mb-8" style={{ fontSize: '26px', fontWeight: '700', letterSpacing: '0.5px' }}>
+            LOGIN
+          </h1>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="flex items-center">
+              <label htmlFor="username" className="text-white text-sm min-w-[100px]" style={{ fontWeight: '600' }}>
+                USERNAME:
+              </label>
+>>>>>>> admin-page
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+<<<<<<< HEAD
                 placeholder="Username"
                 className={inputClass}
                 required
               />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                className={inputClass}
+=======
+                className="flex-1 rounded px-3 py-1 outline-none text-sm bg-white"
+                style={{ fontWeight: '400' }}
                 required
               />
             </div>
 
+            <div className="flex items-center">
+              <label htmlFor="password" className="text-white text-sm min-w-[100px]" style={{ fontWeight: '600' }}>
+                PASSWORD:
+              </label>
+>>>>>>> admin-page
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+<<<<<<< HEAD
+                placeholder="Password"
+                className={inputClass}
+=======
+                className="flex-1 rounded px-3 py-1 outline-none text-sm bg-white"
+                style={{ fontWeight: '400' }}
+>>>>>>> admin-page
+                required
+              />
+            </div>
+
+<<<<<<< HEAD
             {/* Submit */}
             <button
               type="submit"
@@ -103,6 +141,25 @@ export function LoginPage({ onSignUpClick, onLoginSubmit }: LoginPageProps) {
                   Sign up
                 </button>
               </p>
+=======
+            <div className="pt-6 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={onSignUpClick}
+                className="text-white text-sm hover:underline"
+                style={{ fontWeight: '400' }}
+              >
+                Or Sign Up
+              </button>
+
+              <button
+                type="submit"
+                className="bg-white text-[#00004d] rounded px-6 py-1.5 hover:bg-gray-100 transition-colors text-sm"
+                style={{ fontWeight: '700' }}
+              >
+                LOGIN
+              </button>
+>>>>>>> admin-page
             </div>
           </form>
         </div>
