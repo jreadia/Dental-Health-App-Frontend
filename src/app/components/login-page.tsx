@@ -66,7 +66,7 @@ export function LoginPage({ onSignUpClick, onLoginSubmit }: LoginPageProps) {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
+                placeholder="Email"
                 className={inputClass}
                 required
               />

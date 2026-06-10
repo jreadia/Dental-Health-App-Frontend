@@ -110,7 +110,7 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
                 Account
               </p>
               <div className="space-y-2">
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" className={inputClass} required />
+                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Email" className={inputClass} required />
                 <div className="grid grid-cols-2 gap-2">
                   <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className={inputClass} required />
                   <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm" className={inputClass} required />
