@@ -5,10 +5,20 @@ interface ResultPageProps {
 }
 
 export default function ResultPage({ onGoHome, uploadedImage, apiResult }: ResultPageProps) {
-  // Extract info from apiResult or fallback to mock data
-  const hasCalculus = apiResult?.hasCalculus ?? true; // fallback to true for the UI mockup
-  const confidenceScore = apiResult?.confidenceScore ?? 94; // fallback to 94%
-  const message = apiResult?.message ?? "Professional cleaning recommended";
+  // Extract info from apiResult.data and apiResult.data.mlResults
+  const mlData = apiResult?.data?.mlResults || {};
+  const imageInfo = apiResult?.data || {};
+
+  const hasCalculus = mlData.calculusDetected ?? true;
+  const confidenceScore = mlData.highestConfidence !== undefined ? Math.round(mlData.highestConfidence) : 94;
+  
+  // Create a message string from overall_diagnosis and calculusAmount
+  const diagnosis = mlData.overall_diagnosis ?? (apiResult?.message || "Professional cleaning recommended");
+  const amountText = mlData.calculusAmount !== undefined ? ` - Amount: ${mlData.calculusAmount}` : "";
+  const message = `${diagnosis}${amountText}`;
+
+  // Use the annotated image from the API if available, otherwise fallback to the user uploaded image
+  const displayImage = imageInfo.annotatedImageUrl || imageInfo.originalImageUrl || uploadedImage;
   
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-center p-8 gap-16 relative overflow-hidden" style={{ backgroundColor: '#d4d4e8' }}>
@@ -60,9 +70,9 @@ export default function ResultPage({ onGoHome, uploadedImage, apiResult }: Resul
             {uploadedImage ? (
               <div className="w-full flex-1 border-2 border-slate-200 rounded-2xl overflow-hidden bg-black mb-6 flex items-center justify-center">
                 <img 
-                  src={uploadedImage} 
+                  src={displayImage} 
                   alt="Scanned Teeth" 
-                  className="w-full h-full object-cover opacity-90"
+                  className="w-full h-full object-contain opacity-90"
                 />
               </div>
             ) : (

@@ -79,11 +79,7 @@ export default function UploadPage({ onShowResult, onCancel }: UploadPageProps) 
       const formData = new FormData();
       formData.append('image', selectedFile);
 
-      const response = await apiClient.post('/dental-images', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      const response = await apiClient.post('/dental-images', formData);
       
       if (onShowResult) {
         onShowResult(selectedImage, response.data);

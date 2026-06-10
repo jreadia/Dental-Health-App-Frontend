@@ -33,4 +33,13 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+  
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://dental-health-backend-x7b5.onrender.com',
+        changeOrigin: true,
+      }
+    }
+  }
 })
