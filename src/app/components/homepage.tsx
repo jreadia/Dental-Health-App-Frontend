@@ -1,10 +1,20 @@
-interface HomepageProps {
-  onUploadClick?: () => void;
+interface HistoryItem {
+  id: string;
+  date: string;
+  plaques: number;
+  status: string;
 }
 
-export function Homepage({ onUploadClick }: HomepageProps) {
+interface HomepageProps {
+  onUploadClick?: () => void;
+  history?: HistoryItem[];
+}
+
+export function Homepage({ onUploadClick, history = [] }: HomepageProps) {
   return (
     <div className="size-full relative overflow-hidden" style={{ backgroundColor: '#d4d4e8', minHeight: '100vh' }}>
+      
+      {/* Decorative curved lines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <svg className="absolute top-0 right-0 w-64 h-64 translate-x-20 -translate-y-20" viewBox="0 0 200 200">
           <path d="M 0,100 Q 50,150 100,100 T 200,100" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
@@ -22,9 +32,11 @@ export function Homepage({ onUploadClick }: HomepageProps) {
 
       <div className="size-full min-h-screen flex items-center justify-center px-6 relative z-10">
         <div className="w-full max-w-6xl flex flex-col md:flex-row items-center justify-between gap-12">
+          
+          {/* Left Side - Text Content & History List */}
           <div className="flex-1 w-full">
             <h1 className="text-[#00004d] mb-2" style={{ fontSize: '48px', fontWeight: '700', lineHeight: '1.2' }}>
-              Digital Dental Diagnostics
+              Dental Diagnostics
             </h1>
             <h2 className="text-[#00004d] mb-4" style={{ fontSize: '32px', fontWeight: '600', lineHeight: '1.2' }}>
               Web-Based Classification
@@ -32,9 +44,43 @@ export function Homepage({ onUploadClick }: HomepageProps) {
             <p className="text-[#00004d] mb-8" style={{ fontSize: '14px', fontWeight: '400' }}>
               Identify calculus of the teeth with AI analysis
             </p>
-            <div className="bg-[#00004d] rounded-2xl w-full h-32"></div>
+
+            {/* History List Section (Replacing the dark blue rectangle) */}
+            <div className="w-full max-w-md">
+              <h3 className="text-[#00004d] font-bold text-lg mb-3 flex items-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Recent Scans
+              </h3>
+              
+              {history.length > 0 ? (
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl w-full max-h-48 overflow-y-auto shadow-sm border border-white/50 p-2 space-y-2 custom-scrollbar">
+                  {history.map((item) => (
+                    <div key={item.id} className="flex justify-between items-center p-3 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-blue-200 transition-colors">
+                      <div>
+                        <p className="text-xs text-slate-400 font-medium mb-0.5">{item.date}</p>
+                        <p className="text-sm font-bold text-[#00004d]">{item.plaques} Plaque(s) Detected</p>
+                      </div>
+                      <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                        item.status === 'Very Unhealthy' ? 'bg-rose-100 text-rose-700' :
+                        item.status === 'Unhealthy' ? 'bg-orange-100 text-orange-700' :
+                        item.status === 'Somewhat Safe' ? 'bg-yellow-100 text-yellow-700' :
+                        'bg-emerald-100 text-emerald-700'
+                      }`}>
+                        {item.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-[#00004d]/5 border-2 border-dashed border-[#00004d]/20 rounded-2xl w-full h-32 flex flex-col items-center justify-center text-center p-6">
+                  <p className="text-[#00004d]/60 font-medium text-sm">No scan history available.</p>
+                  <p className="text-[#00004d]/40 text-xs mt-1">Upload an image to see your results here.</p>
+                </div>
+              )}
+            </div>
           </div>
 
+          {/* Right Side - Tooth Character */}
           <div className="flex-shrink-0 relative mt-8 md:mt-0">
             <div className="relative w-48 h-48">
               <div className="absolute inset-0 bg-blue-200 rounded-full opacity-50"></div>
@@ -50,12 +96,11 @@ export function Homepage({ onUploadClick }: HomepageProps) {
                 onClick={onUploadClick}
                 className="absolute bottom-0 right-0 bg-[#00004d] text-white rounded-full p-3 hover:opacity-90 transition-opacity shadow-lg"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-                </svg>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
               </button>
             </div>
           </div>
+          
         </div>
       </div>
     </div>
