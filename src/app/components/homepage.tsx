@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 interface HistoryItem {
   id: string;
   date: string;
@@ -15,11 +14,6 @@ export function Homepage({ onUploadClick, history = [] }: HomepageProps) {
   return (
     <div className="size-full relative overflow-hidden" style={{ backgroundColor: '#d4d4e8', minHeight: '100vh' }}>
       
-=======
-export function Homepage() {
-  return (
-    <div className="size-full relative overflow-hidden" style={{ backgroundColor: '#d4d4e8' }}>
->>>>>>> admin-page
       {/* Decorative curved lines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <svg className="absolute top-0 right-0 w-64 h-64 translate-x-20 -translate-y-20" viewBox="0 0 200 200">
@@ -37,7 +31,6 @@ export function Homepage() {
         </button>
       </div>
 
-<<<<<<< HEAD
       <div className="size-full min-h-screen flex items-center justify-center px-6 relative z-10">
         <div className="w-full max-w-6xl flex flex-col md:flex-row items-center justify-between gap-12">
           
@@ -45,15 +38,6 @@ export function Homepage() {
           <div className="flex-1 w-full">
             <h1 className="text-[#00004d] mb-2" style={{ fontSize: '48px', fontWeight: '700', lineHeight: '1.2' }}>
               Dental Diagnostics
-=======
-      {/* Main Content */}
-      <div className="size-full flex items-center justify-center px-6 relative z-10">
-        <div className="w-full max-w-6xl flex items-center justify-between gap-12">
-          {/* Left Side - Text Content */}
-          <div className="flex-1">
-            <h1 className="text-[#00004d] mb-2" style={{ fontSize: '48px', fontWeight: '700', lineHeight: '1.2' }}>
-              Web Title
->>>>>>> admin-page
             </h1>
             <h2 className="text-[#00004d] mb-4" style={{ fontSize: '32px', fontWeight: '600', lineHeight: '1.2' }}>
               Presentation
@@ -62,7 +46,6 @@ export function Homepage() {
               Watch the web page
             </p>
 
-<<<<<<< HEAD
             {/* History List Section (Replacing the dark blue rectangle) */}
             <div className="w-full max-w-md">
               <h3 className="text-[#00004d] font-bold text-lg mb-3 flex items-center gap-2">
@@ -100,15 +83,6 @@ export function Homepage() {
 
           {/* Right Side - Tooth Character */}
           <div className="flex-shrink-0 relative mt-8 md:mt-0">
-=======
-            {/* Dark Blue Rectangle */}
-            <div className="bg-[#00004d] rounded-2xl w-full h-32"></div>
-          </div>
-
-          {/* Right Side - Tooth Character */}
-          <div className="flex-shrink-0 relative">
-            {/* Tooth Character Illustration */}
->>>>>>> admin-page
             <div className="relative w-48 h-48">
               {/* Light blue circle background */}
               <div className="absolute inset-0 bg-blue-200 rounded-full opacity-50"></div>
@@ -133,20 +107,11 @@ export function Homepage() {
                 <circle cx="75" cy="45" r="8" fill="none" stroke="#00004d" strokeWidth="2" />
                 <line x1="81" y1="51" x2="88" y2="58" stroke="#00004d" strokeWidth="2" strokeLinecap="round" />
               </svg>
-<<<<<<< HEAD
               <button 
                 onClick={onUploadClick}
                 className="absolute bottom-0 right-0 bg-[#00004d] text-white rounded-full p-3 hover:opacity-90 transition-opacity shadow-lg"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
-=======
-
-              {/* Arrow button */}
-              <button className="absolute bottom-0 right-0 bg-[#00004d] text-white rounded-full p-3 hover:opacity-90 transition-opacity">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
->>>>>>> admin-page
               </button>
             </div>
           </div>

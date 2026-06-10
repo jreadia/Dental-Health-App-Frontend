@@ -1,4 +1,6 @@
 import { useState } from "react";
+import UploadPage from "./components/upload-page";
+import ResultPage from "./components/result-page";
 import { LoginPage } from "./components/login-page";
 import { SignupPage } from "./components/signup-page";
 import { SuccessPage } from "./components/success-page";
@@ -7,7 +9,16 @@ import { Homepage } from "./components/homepage";
 import AdminPage from "./components/admin-page";
 import { isAdminAccount, isSecretTrigger } from "./adminAccounts";
 
-type Page = "login" | "signup" | "success" | "loading" | "homepage" | "admin-login" | "admin";
+type Page =
+  | "login"
+  | "signup"
+  | "success"
+  | "loading"
+  | "homepage"
+  | "upload"
+  | "results"
+  | "admin-login"
+  | "admin";
 
 export interface HistoryItem {
   id: string;
@@ -17,27 +28,20 @@ export interface HistoryItem {
 }
 
 export default function App() {
-<<<<<<< HEAD
-  const [currentPage, setCurrentPage] = useState<
-    "login" | "signup" | "success" | "loading" | "homepage" | "upload" | "results"
-  >("login");
-  
+  const [currentPage, setCurrentPage] = useState<Page>("login");
+
   const [scannedImage, setScannedImage] = useState<string | null>(null);
-  
-  // New state to hold the specific current result data and the entire history list
   const [currentResult, setCurrentResult] = useState<HistoryItem | null>(null);
   const [scanHistory, setScanHistory] = useState<HistoryItem[]>([]);
+  const [loggedInAs, setLoggedInAs] = useState("");
 
-  // Function to simulate AI scanning and categorization
   const handleShowResult = (imageUrl: string) => {
-    // Generate a random dummy plaque count between 0 and 12 for testing
-    const plaques = Math.floor(Math.random() * 13); 
-    
+    const plaques = Math.floor(Math.random() * 13);
+
     let status = "Safe";
     if (plaques >= 10) status = "Very Unhealthy";
     else if (plaques >= 7) status = "Unhealthy";
     else if (plaques >= 4) status = "Somewhat Safe";
-    else status = "Safe"; // Covers 0-3
 
     const newResult: HistoryItem = {
       id: Date.now().toString(),
@@ -48,16 +52,11 @@ export default function App() {
 
     setScannedImage(imageUrl);
     setCurrentResult(newResult);
-    // Add the new result to the top of the history list
-    setScanHistory(prevHistory => [newResult, ...prevHistory]); 
+    setScanHistory((prev) => [newResult, ...prev]);
     setCurrentPage("results");
   };
-=======
-  const [currentPage, setCurrentPage] = useState<Page>("login");
-  const [loggedInAs, setLoggedInAs]   = useState("");
 
   function handleLogin(username: string, password: string) {
-    // Secret trigger: josep/josep opens the hidden admin login screen
     if (isSecretTrigger(username, password)) {
       setCurrentPage("admin-login");
     } else {
@@ -73,7 +72,6 @@ export default function App() {
     }
     return false;
   }
->>>>>>> admin-page
 
   return (
     <>
@@ -83,67 +81,67 @@ export default function App() {
           onLoginSubmit={handleLogin}
         />
       )}
+
       {currentPage === "signup" && (
         <SignupPage
           onBackToLogin={() => setCurrentPage("login")}
           onAccountCreated={() => setCurrentPage("success")}
         />
       )}
+
       {currentPage === "success" && (
         <SuccessPage onRedirectToLogin={() => setCurrentPage("login")} />
       )}
+
       {currentPage === "loading" && (
         <LoadingPage onLoadingComplete={() => setCurrentPage("homepage")} />
       )}
-<<<<<<< HEAD
-      
-      {/* Pass the scanHistory array to the homepage to display */}
+
       {currentPage === "homepage" && (
-        <Homepage 
-          history={scanHistory} 
-          onUploadClick={() => setCurrentPage("upload")} 
+        <Homepage
+          history={scanHistory}
+          onUploadClick={() => setCurrentPage("upload")}
         />
       )}
-      
-      {/* UploadPage passes the image to our new handleShowResult function */}
+
       {currentPage === "upload" && (
-        <UploadPage 
-          onShowResult={handleShowResult} 
-          onCancel={() => setCurrentPage("homepage")} 
+        <UploadPage
+          onShowResult={handleShowResult}
+          onCancel={() => setCurrentPage("homepage")}
         />
       )}
-      
-      {/* ResultPage now receives the image AND the specific plaque data */}
+
       {currentPage === "results" && (
-        <ResultPage 
+        <ResultPage
           uploadedImage={scannedImage}
           resultData={currentResult}
           onGoHome={() => {
             setScannedImage(null);
             setCurrentResult(null);
             setCurrentPage("homepage");
-          }} 
-=======
-      {currentPage === "homepage" && (
-        <Homepage />
+          }}
+        />
       )}
+
       {currentPage === "admin-login" && (
         <AdminLoginScreen
           onLogin={handleAdminLogin}
           onBack={() => setCurrentPage("login")}
         />
       )}
+
       {currentPage === "admin" && (
         <AdminPage
-          onLogout={() => { setLoggedInAs(""); setCurrentPage("login"); }}
+          onLogout={() => {
+            setLoggedInAs("");
+            setCurrentPage("login");
+          }}
           loggedInAs={loggedInAs}
->>>>>>> admin-page
         />
       )}
     </>
   );
 }
-
 // ─── Secret Admin Login Screen ────────────────────────────────────────────────
 function AdminLoginScreen({
   onLogin,

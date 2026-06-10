@@ -9,30 +9,24 @@ const inputClass =
   "w-full rounded-xl px-4 py-3 outline-none text-sm bg-white/10 text-white placeholder-white/50 border border-white/20 focus:border-white/60 focus:bg-white/15 transition-all";
 
 export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
-<<<<<<< HEAD
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
   const [birthday, setBirthday] = useState("");
-=======
-  const [firstname, setFirstname] = useState("")
-  const [lastname, setLastname] = useState("")
->>>>>>> admin-page
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-<<<<<<< HEAD
     setError("");
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       return;
     }
     console.log("Sign up submitted:", { firstName, lastName, username, phoneNumber, address, birthday, password });
-=======
-    console.log("Sign up submitted:", { username, password, confirmPassword, firstname, lastname });
->>>>>>> admin-page
     onAccountCreated();
   };
 
@@ -47,7 +41,6 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
         <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #818cf8, transparent)" }} />
       </div>
 
-<<<<<<< HEAD
       {/* SIGN UP badge */}
       <div
         className="absolute top-8 left-8 bg-[#00004d] text-white px-5 py-2 rounded-full shadow-lg z-20"
@@ -117,7 +110,7 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
                 Account
               </p>
               <div className="space-y-2">
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Email/Username" className={inputClass} required />
+                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" className={inputClass} required />
                 <div className="grid grid-cols-2 gap-2">
                   <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className={inputClass} required />
                   <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm" className={inputClass} required />
@@ -144,117 +137,6 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
                   Log in
                 </button>
               </p>
-=======
-      {/* SIGN UP label */}
-      <div className="absolute top-8 left-8 bg-[#00004d] text-white px-5 py-2 rounded-full" style={{ fontSize: '13px', fontWeight: '700' }}>
-        SIGN UP
-      </div>
-
-      {/* Sign Up Card */}
-      <div className="w-full max-w-sm px-6 relative z-10">
-        <div className="bg-[#00004d] rounded-2xl px-8 py-12 shadow-2xl">
-          <h1 className="text-white text-center mb-8" style={{ fontSize: '26px', fontWeight: '700', letterSpacing: '0.5px' }}>
-            SIGN UP
-          </h1>
-
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="flex items-center gap-0">
-              <label htmlFor="username" className="text-white text-sm" style={{ fontWeight: '600', marginRight: '0' }}>
-                USERNAME:
-              </label>
-              <input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="flex-1 rounded px-2 py-1 outline-none text-sm bg-white ml-1"
-                style={{ fontWeight: '400' }}
-                required
-              />
-            </div>
-
-            <div className="flex items-center gap-0">
-              <label htmlFor="firstname" className="text-white text-sm" style={{ fontWeight: '600', marginRight: '0' }}>
-                FIRSTNAME:
-              </label>
-              <input
-                id="firstname"
-                type="text"
-                value={firstname}
-                onChange={(e) => setFirstname(e.target.value)}
-                className="flex-1 rounded px-2 py-1 outline-none text-sm bg-white ml-1"
-                style={{ fontWeight: '400' }}
-                required
-              />
-            </div>
-
-            <div className="flex items-center gap-0">
-              <label htmlFor="lastname" className="text-white text-sm" style={{ fontWeight: '600', marginRight: '0' }}>
-                LASTNAME:
-              </label>
-              <input
-                id="lastname"
-                type="text"
-                value={lastname}
-                onChange={(e) => setLastname(e.target.value)}
-                className="flex-1 rounded px-2 py-1 outline-none text-sm bg-white ml-1"
-                style={{ fontWeight: '400' }}
-                required
-              />
-            </div>
-
-            <div className="flex items-center gap-0">
-              <label htmlFor="password" className="text-white text-sm" style={{ fontWeight: '600', marginRight: '0' }}>
-                PASSWORD:
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="flex-1 rounded px-2 py-1 outline-none text-sm bg-white ml-1"
-                style={{ fontWeight: '400' }}
-                required
-              />
-            </div>
-
-            <div className="flex items-center gap-0">
-              <label htmlFor="confirmPassword" className="text-white text-sm" style={{ fontWeight: '600', marginRight: '0' }}>
-                CONFIRM PASSWORD:
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="flex-1 rounded px-2 py-1 outline-none text-sm bg-white ml-1"
-                style={{ fontWeight: '400' }}
-                required
-              />
-            </div>
-
-            <div className="pt-6 flex items-center justify-between gap-2">
-              <button
-                type="button"
-                onClick={onBackToLogin}
-                className="text-white text-sm hover:underline"
-                style={{ fontWeight: '400' }}
-              >
-                Or Log In
-              </button>
-
-              <button
-                type="submit"
-                className="bg-white text-[#00004d] rounded px-4 py-1.5 hover:bg-gray-100 transition-colors text-xs"
-                style={{ fontWeight: '700' }}
-              >
-                CREATE ACCOUNT
-              </button>
-              
-            </div>
-
-            <div className="text-center text-white text-xs pt-2" style={{ fontWeight: '400' }}>
->>>>>>> admin-page
             </div>
           </form>
         </div>
