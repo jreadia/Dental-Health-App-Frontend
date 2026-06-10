@@ -10,15 +10,7 @@ import AdminPage from "./components/admin-page";
 import { isAdminAccount, isSecretTrigger } from "./adminAccounts";
 
 type Page =
-  | "login"
-  | "signup"
-  | "success"
-  | "loading"
-  | "homepage"
-  | "upload"
-  | "results"
-  | "admin-login"
-  | "admin";
+  | "login" | "signup" | "success" | "loading" | "homepage" | "upload" | "results" | "admin-login" | "admin";
 
 export interface HistoryItem {
   id: string;

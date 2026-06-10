@@ -2,7 +2,7 @@ import { useState } from "react";
 
 interface LoginPageProps {
   onSignUpClick: () => void;
-  onLoginSubmit: () => void;
+  onLoginSubmit: (username: string, password: string) => void;
 }
 
 const inputClass =
@@ -14,8 +14,11 @@ export function LoginPage({ onSignUpClick, onLoginSubmit }: LoginPageProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     console.log("Login submitted:", { username, password });
-    onLoginSubmit();
+
+    // IMPORTANT: pass username + password to App.tsx
+    onLoginSubmit(username, password);
   };
 
   return (
@@ -46,7 +49,7 @@ export function LoginPage({ onSignUpClick, onLoginSubmit }: LoginPageProps) {
       {/* Card */}
       <div className="w-full max-w-sm relative z-10 px-4">
         <div className="bg-[#00004d] rounded-3xl px-10 py-12 shadow-2xl">
-
+          
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-white mb-1" style={{ fontSize: "26px", fontWeight: "700" }}>
@@ -67,6 +70,7 @@ export function LoginPage({ onSignUpClick, onLoginSubmit }: LoginPageProps) {
                 className={inputClass}
                 required
               />
+
               <input
                 type="password"
                 value={password}
@@ -77,7 +81,6 @@ export function LoginPage({ onSignUpClick, onLoginSubmit }: LoginPageProps) {
               />
             </div>
 
-            {/* Submit */}
             <button
               type="submit"
               className="w-full rounded-xl px-6 py-3 transition-all shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]"
@@ -97,8 +100,7 @@ export function LoginPage({ onSignUpClick, onLoginSubmit }: LoginPageProps) {
                 <button
                   type="button"
                   onClick={onSignUpClick}
-                  className="text-white hover:underline"
-                  style={{ fontWeight: "600" }}
+                  className="text-white hover:underline font-semibold"
                 >
                   Sign up
                 </button>
