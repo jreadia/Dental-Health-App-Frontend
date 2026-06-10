@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import apiClient from "../apiClient";
+import { useAuth } from "../AuthContext";
 
 interface LoginPageProps {
   onSignUpClick: () => void;
@@ -9,11 +10,36 @@ interface LoginPageProps {
 export function LoginPage({ onSignUpClick, onLoginSubmit }: LoginPageProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { setUser } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login submitted:", { username, password });
-    onLoginSubmit();
+    setError("");
+    setIsLoading(true);
+    
+    try {
+      // Assuming backend expects email and password
+      const response = await apiClient.post("/auth/users/login", {
+        email: username,
+        password
+      });
+      
+      if (response.data && response.data.user) {
+        setUser(response.data.user);
+        onLoginSubmit();
+      } else {
+        // Fallback if the user object is just the response data
+        setUser(response.data);
+        onLoginSubmit();
+      }
+    } catch (err: any) {
+      console.error("Login failed:", err);
+      setError(err.response?.data?.message || "Login failed. Please check your credentials.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

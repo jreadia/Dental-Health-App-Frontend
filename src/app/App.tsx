@@ -14,6 +14,7 @@ export default function App() {
   
   // State to hold the uploaded image so it can be passed to the result page
   const [scannedImage, setScannedImage] = useState<string | null>(null);
+  const [apiResult, setApiResult] = useState<any>(null);
 
   return (
     <>
@@ -46,8 +47,9 @@ export default function App() {
       {/* UploadPage passes the image back up when "Show Result" is clicked */}
       {currentPage === "upload" && (
         <UploadPage 
-          onShowResult={(imageUrl) => {
+          onShowResult={(imageUrl, result) => {
             setScannedImage(imageUrl);
+            setApiResult(result);
             setCurrentPage("results");
           }} 
           onCancel={() => setCurrentPage("homepage")} 
@@ -58,8 +60,10 @@ export default function App() {
       {currentPage === "results" && (
         <ResultPage 
           uploadedImage={scannedImage}
+          apiResult={apiResult}
           onGoHome={() => {
             setScannedImage(null); // Clear the image when returning home
+            setApiResult(null);
             setCurrentPage("homepage");
           }} 
         />

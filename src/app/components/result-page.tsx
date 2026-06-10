@@ -1,9 +1,15 @@
 interface ResultPageProps {
   onGoHome?: () => void;
   uploadedImage?: string | null;
+  apiResult?: any;
 }
 
-export default function ResultPage({ onGoHome, uploadedImage }: ResultPageProps) {
+export default function ResultPage({ onGoHome, uploadedImage, apiResult }: ResultPageProps) {
+  // Extract info from apiResult or fallback to mock data
+  const hasCalculus = apiResult?.hasCalculus ?? true; // fallback to true for the UI mockup
+  const confidenceScore = apiResult?.confidenceScore ?? 94; // fallback to 94%
+  const message = apiResult?.message ?? "Professional cleaning recommended";
+  
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-center p-8 gap-16 relative overflow-hidden" style={{ backgroundColor: '#d4d4e8' }}>
       
@@ -39,10 +45,17 @@ export default function ResultPage({ onGoHome, uploadedImage }: ResultPageProps)
           <div className="absolute top-0 inset-x-0 h-7 bg-gray-900 rounded-b-3xl w-40 mx-auto z-20"></div>
 
           <div className="flex-1 flex flex-col items-center">
-            <div className="w-full bg-rose-100 border border-rose-200 text-rose-800 p-4 rounded-2xl mb-6">
-              <h3 className="text-lg font-bold mb-1">Calculus Detected</h3>
-              <p className="text-sm font-medium opacity-80">Professional cleaning recommended</p>
-            </div>
+            {hasCalculus ? (
+              <div className="w-full bg-rose-100 border border-rose-200 text-rose-800 p-4 rounded-2xl mb-6">
+                <h3 className="text-lg font-bold mb-1">Calculus Detected</h3>
+                <p className="text-sm font-medium opacity-80">{message}</p>
+              </div>
+            ) : (
+              <div className="w-full bg-green-100 border border-green-200 text-green-800 p-4 rounded-2xl mb-6">
+                <h3 className="text-lg font-bold mb-1">Healthy Teeth</h3>
+                <p className="text-sm font-medium opacity-80">No significant calculus detected</p>
+              </div>
+            )}
 
             {uploadedImage ? (
               <div className="w-full flex-1 border-2 border-slate-200 rounded-2xl overflow-hidden bg-black mb-6 flex items-center justify-center">
@@ -62,9 +75,9 @@ export default function ResultPage({ onGoHome, uploadedImage }: ResultPageProps)
             )}
             
             <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-              <div className="h-full bg-[#00004d] w-[94%] rounded-full"></div>
+              <div className="h-full bg-[#00004d] rounded-full transition-all duration-1000" style={{ width: `${confidenceScore}%` }}></div>
             </div>
-            <p className="text-xs text-slate-500 font-semibold mt-2">94% Confidence Score</p>
+            <p className="text-xs text-slate-500 font-semibold mt-2">{confidenceScore}% Confidence Score</p>
           </div>
           
         </div>
