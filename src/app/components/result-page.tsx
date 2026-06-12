@@ -26,11 +26,10 @@ export default function ResultPage({ onGoHome, uploadedImage, resultData }: Resu
   const oralHealthStatus = getOralHealthStatus(plaques);
 
   // Helper function to color code the result banner
-  const getStatusStyle = (status: string = "Safe") => {
-    if (status === "Very Unhealthy") return "bg-rose-100 border-rose-200 text-rose-800";
-    if (status === "Unhealthy") return "bg-orange-100 border-orange-200 text-orange-800";
-    if (status === "Somewhat Safe") return "bg-yellow-100 border-yellow-200 text-yellow-800";
-    return "bg-emerald-100 border-emerald-200 text-emerald-800"; // Safe
+  const getStatusStyle = (status: string) => {
+    if (status === "Unhealthy") return "bg-rose-100 border-rose-200 text-rose-800";
+    if (status === "Mild") return "bg-yellow-100 border-yellow-200 text-yellow-800";
+    return "bg-emerald-100 border-emerald-200 text-emerald-800"; // Healthy
   };
 
   // Helper for the oral health status pill
@@ -104,8 +103,8 @@ export default function ResultPage({ onGoHome, uploadedImage, resultData }: Resu
           <div className="flex-1 flex flex-col items-center">
             
             {/* Dynamic Status Banner */}
-            <div className={`w-full border p-4 rounded-2xl mb-6 ${getStatusStyle(resultData?.status)}`}>
-              <h3 className="text-xl font-black uppercase tracking-wide mb-1">{resultData?.status || "Safe"}</h3>
+            <div className={`w-full border p-4 rounded-2xl mb-6 ${getStatusStyle(oralHealthStatus)}`}>
+              <h3 className="text-xl font-black uppercase tracking-wide mb-1">{oralHealthStatus}</h3>
               <p className="text-sm font-semibold opacity-90">{plaques} Plaque(s) Detected</p>
             </div>
 
