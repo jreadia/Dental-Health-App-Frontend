@@ -30,10 +30,10 @@ export default function App() {
   const handleShowResult = (imageUrl: string) => {
     const plaques = Math.floor(Math.random() * 13);
 
-    let status = "Safe";
-    if (plaques >= 10) status = "Very Unhealthy";
-    else if (plaques >= 7) status = "Unhealthy";
-    else if (plaques >= 4) status = "Somewhat Safe";
+    // Oral Health Status: healthy = 0, mild = 1-5, unhealthy = 6+
+    let status = "Healthy";
+    if (plaques >= 6) status = "Unhealthy";
+    else if (plaques >= 1) status = "Mild";
 
     const newResult: HistoryItem = {
       id: Date.now().toString(),

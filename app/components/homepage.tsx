@@ -16,13 +16,6 @@ export function Homepage({ onUploadClick, onHomeClick, onLogout, history = [] }:
   return (
     <div className="size-full relative overflow-hidden" style={{ backgroundColor: '#d4d4e8', minHeight: '100vh' }}>
 
-  history?: HistoryItem[];
-}
-
-export function Homepage({ onUploadClick, history = [] }: HomepageProps) {
-  return (
-    <div className="size-full relative overflow-hidden" style={{ backgroundColor: '#d4d4e8', minHeight: '100vh' }}>
-      
       {/* Decorative curved lines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <svg className="absolute top-0 right-0 w-64 h-64 translate-x-20 -translate-y-20" viewBox="0 0 200 200">
@@ -85,9 +78,8 @@ export function Homepage({ onUploadClick, history = [] }: HomepageProps) {
                         <p className="text-sm font-bold text-[#00004d]">{item.plaques} Plaque(s) Detected</p>
                       </div>
                       <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                        item.status === 'Very Unhealthy' ? 'bg-rose-100 text-rose-700' :
-                        item.status === 'Unhealthy' ? 'bg-orange-100 text-orange-700' :
-                        item.status === 'Somewhat Safe' ? 'bg-yellow-100 text-yellow-700' :
+                        item.status === 'Unhealthy' ? 'bg-rose-100 text-rose-700' :
+                        item.status === 'Mild' ? 'bg-yellow-100 text-yellow-700' :
                         'bg-emerald-100 text-emerald-700'
                       }`}>
                         {item.status}
