@@ -16,6 +16,13 @@ export function Homepage({ onUploadClick, onHomeClick, onLogout, history = [] }:
   return (
     <div className="size-full relative overflow-hidden" style={{ backgroundColor: '#d4d4e8', minHeight: '100vh' }}>
 
+  history?: HistoryItem[];
+}
+
+export function Homepage({ onUploadClick, history = [] }: HomepageProps) {
+  return (
+    <div className="size-full relative overflow-hidden" style={{ backgroundColor: '#d4d4e8', minHeight: '100vh' }}>
+      
       {/* Decorative curved lines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <svg className="absolute top-0 right-0 w-64 h-64 translate-x-20 -translate-y-20" viewBox="0 0 200 200">
