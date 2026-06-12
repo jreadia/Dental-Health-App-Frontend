@@ -1,4 +1,6 @@
 import { useState } from "react";
+import UploadPage from "./components/upload-page";
+import ResultPage from "./components/result-page";
 import { LoginPage } from "./components/login-page";
 import { SignupPage } from "./components/signup-page";
 import { SuccessPage } from "./components/success-page";
@@ -7,14 +9,46 @@ import { Homepage } from "./components/homepage";
 import AdminPage from "./components/admin-page";
 import { isAdminAccount, isSecretTrigger } from "./adminAccounts";
 
-type Page = "login" | "signup" | "success" | "loading" | "homepage" | "admin-login" | "admin";
+type Page =
+  | "login" | "signup" | "success" | "loading" | "homepage" | "upload" | "results" | "admin-login" | "admin";
+
+export interface HistoryItem {
+  id: string;
+  date: string;
+  plaques: number;
+  status: string;
+}
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>("login");
-  const [loggedInAs, setLoggedInAs]   = useState("");
+
+  const [scannedImage, setScannedImage] = useState<string | null>(null);
+  const [currentResult, setCurrentResult] = useState<HistoryItem | null>(null);
+  const [scanHistory, setScanHistory] = useState<HistoryItem[]>([]);
+  const [loggedInAs, setLoggedInAs] = useState("");
+
+  const handleShowResult = (imageUrl: string) => {
+    const plaques = Math.floor(Math.random() * 13);
+
+    let status = "Safe";
+    if (plaques >= 10) status = "Very Unhealthy";
+    else if (plaques >= 7) status = "Unhealthy";
+    else if (plaques >= 4) status = "Somewhat Safe";
+
+    const newResult: HistoryItem = {
+      id: Date.now().toString(),
+      date: new Date().toLocaleDateString(),
+      plaques,
+      status,
+    };
+
+    setScannedImage(imageUrl);
+    setCurrentResult(newResult);
+    setScanHistory((prev) => [newResult, ...prev]);
+    setCurrentPage("results");
+  };
 
   function handleLogin(username: string, password: string) {
-    // Secret trigger: josep/josep opens the hidden admin login screen
     if (isSecretTrigger(username, password)) {
       setCurrentPage("admin-login");
     } else {
@@ -39,37 +73,74 @@ export default function App() {
           onLoginSubmit={handleLogin}
         />
       )}
+
       {currentPage === "signup" && (
         <SignupPage
           onBackToLogin={() => setCurrentPage("login")}
           onAccountCreated={() => setCurrentPage("success")}
         />
       )}
+
       {currentPage === "success" && (
         <SuccessPage onRedirectToLogin={() => setCurrentPage("login")} />
       )}
+
       {currentPage === "loading" && (
         <LoadingPage onLoadingComplete={() => setCurrentPage("homepage")} />
       )}
+
       {currentPage === "homepage" && (
-        <Homepage />
+        <Homepage
+          history={scanHistory}
+          onUploadClick={() => setCurrentPage("upload")}
+          onHomeClick={() => setCurrentPage("homepage")}
+          onLogout={() => {
+            setScannedImage(null);
+            setCurrentResult(null);
+            setScanHistory([]);
+            setCurrentPage("login");
+          }}
+        />
       )}
+
+      {currentPage === "upload" && (
+        <UploadPage
+          onShowResult={handleShowResult}
+          onCancel={() => setCurrentPage("homepage")}
+        />
+      )}
+
+      {currentPage === "results" && (
+        <ResultPage
+          uploadedImage={scannedImage}
+          resultData={currentResult}
+          onGoHome={() => {
+            setScannedImage(null);
+            setCurrentResult(null);
+            setCurrentPage("homepage");
+          }}
+        />
+      )}
+
       {currentPage === "admin-login" && (
         <AdminLoginScreen
           onLogin={handleAdminLogin}
           onBack={() => setCurrentPage("login")}
         />
       )}
+
       {currentPage === "admin" && (
         <AdminPage
-          onLogout={() => { setLoggedInAs(""); setCurrentPage("login"); }}
+          onLogout={() => {
+            setLoggedInAs("");
+            setCurrentPage("login");
+          }}
           loggedInAs={loggedInAs}
         />
       )}
     </>
   );
 }
-
 // ─── Secret Admin Login Screen ────────────────────────────────────────────────
 function AdminLoginScreen({
   onLogin,

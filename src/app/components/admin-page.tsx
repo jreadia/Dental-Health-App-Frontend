@@ -1,25 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { addAdminAccount, getAdminAccounts } from "../adminAccounts";
+import { addAdminAccount, getAdminAccounts, removeAdminAccount } from "../adminAccounts";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  status: "active" | "inactive" | "banned";
-  joined: string;
-}
-
-// ─── Mock Data ────────────────────────────────────────────────────────────────
-const USERS: User[] = [
-  { id: 1, name: "Maria Santos",   email: "maria@example.com",  status: "active",   joined: "2026-01-12" },
-  { id: 2, name: "Juan Dela Cruz", email: "juan@example.com",   status: "active",   joined: "2026-02-03" },
-  { id: 3, name: "Ana Reyes",      email: "ana@example.com",    status: "inactive", joined: "2026-03-19" },
-  { id: 4, name: "Carlo Mendoza",  email: "carlo@example.com",  status: "banned",   joined: "2026-04-07" },
-  { id: 5, name: "Lea Torres",     email: "lea@example.com",    status: "active",   joined: "2026-05-22" },
-];
+// (mock test users removed)
 
 // ─── Tooth SVG Mascot ─────────────────────────────────────────────────────────
 function ToothMascot() {
@@ -111,7 +96,15 @@ function AddAdminModal({ onClose }: { onClose: () => void }) {
 
 // ─── Admin Accounts List ──────────────────────────────────────────────────────
 function AdminAccountsList() {
-  const accounts = getAdminAccounts();
+  const [accounts, setAccounts] = useState(getAdminAccounts());
+  const [confirmId, setConfirmId] = useState<string | null>(null);
+
+  function handleRemove(username: string) {
+    removeAdminAccount(username);
+    setAccounts(getAdminAccounts());
+    setConfirmId(null);
+  }
+
   return (
     <div style={{ marginTop: 16 }}>
       <h3 style={{ fontSize: 14, color: "#0a2378", marginBottom: 10, fontWeight: 700, letterSpacing: 1 }}>
@@ -122,13 +115,23 @@ function AdminAccountsList() {
           <div key={i} style={{
             background: "#eff6ff", border: "1px solid #bfdbfe",
             borderRadius: 8, padding: "10px 14px",
-            display: "flex", alignItems: "center", justifyContent: "space-between",
+            display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8,
           }}>
             <span style={{ fontWeight: 700, color: "#0a2378", fontSize: 14 }}>{a.username}</span>
-            {a.username === "Josep" && (
+            {a.username === "josep" ? (
               <span style={{ fontSize: 11, background: "#0a2378", color: "#fff", padding: "2px 10px", borderRadius: 20 }}>
                 SUPER ADMIN
               </span>
+            ) : confirmId === a.username ? (
+              <div style={{ display: "flex", gap: 6 }}>
+                <span style={{ fontSize: 12, color: "#991b1b", alignSelf: "center" }}>Remove?</span>
+                <button onClick={() => handleRemove(a.username)} style={{ ...dash.actionBtn, background: "#fee2e2", border: "1px solid #fca5a5", color: "#991b1b" }}>Yes</button>
+                <button onClick={() => setConfirmId(null)} style={dash.actionBtn}>No</button>
+              </div>
+            ) : (
+              <button onClick={() => setConfirmId(a.username)} style={{ ...dash.actionBtn, background: "#fee2e2", border: "1px solid #fca5a5", color: "#991b1b" }}>
+                Remove
+              </button>
             )}
           </div>
         ))}
@@ -196,21 +199,6 @@ function AdminHomepage({
 
 // ─── Data Dashboard ───────────────────────────────────────────────────────────
 function DataDashboard({ onBack, loggedInAs }: { onBack: () => void; loggedInAs: string }) {
-  const [users, setUsers] = useState<User[]>(USERS);
-  const [search, setSearch] = useState("");
-
-  function toggleStatus(id: number) {
-    setUsers(prev =>
-      prev.map(u =>
-        u.id === id ? { ...u, status: u.status === "active" ? "inactive" : "active" } : u
-      )
-    );
-  }
-
-  const filtered = users.filter(
-    u => u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase())
-  );
-
   return (
     <div style={dash.page}>
       <header style={dash.header}>
@@ -219,62 +207,8 @@ function DataDashboard({ onBack, loggedInAs }: { onBack: () => void; loggedInAs:
         <span style={dash.adminBadge}>ADMIN — {loggedInAs.toUpperCase()}</span>
       </header>
 
-      <div style={dash.statsGrid}>
-        {[
-          { label: "Total Users", value: users.length,                                    color: "#3b82f6" },
-          { label: "Active",      value: users.filter(u => u.status === "active").length,   color: "#22c55e" },
-          { label: "Inactive",    value: users.filter(u => u.status === "inactive").length, color: "#f59e0b" },
-          { label: "Banned",      value: users.filter(u => u.status === "banned").length,   color: "#ef4444" },
-        ].map(s => (
-          <div key={s.label} style={{ ...dash.statCard, borderTopColor: s.color }}>
-            <p style={{ ...dash.statVal, color: s.color }}>{s.value}</p>
-            <p style={dash.statLbl}>{s.label}</p>
-          </div>
-        ))}
-      </div>
-
-      <input
-        style={dash.search}
-        placeholder="🔍 Search users…"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
-      <div style={dash.tableWrap}>
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              {["ID", "Name", "Email", "Status", "Joined", "Action"].map(h => (
-                <th key={h} style={dash.th}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map(u => (
-              <tr key={u.id}>
-                <td style={dash.td}>{u.id}</td>
-                <td style={dash.td}>{u.name}</td>
-                <td style={dash.td}>{u.email}</td>
-                <td style={dash.td}>
-                  <span style={{ ...dash.statusPill, ...statusColor(u.status) }}>{u.status}</span>
-                </td>
-                <td style={dash.td}>{u.joined}</td>
-                <td style={dash.td}>
-                  <button
-                    onClick={() => toggleStatus(u.id)}
-                    disabled={u.status === "banned"}
-                    style={dash.actionBtn}
-                  >
-                    {u.status === "active" ? "Deactivate" : u.status === "inactive" ? "Activate" : "Banned"}
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
       {/* Admin accounts list */}
-      <div style={{ padding: "0 32px 32px" }}>
+      <div style={{ padding: "24px 32px" }}>
         <AdminAccountsList />
       </div>
     </div>
@@ -315,13 +249,6 @@ export default function AdminPage({
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-function statusColor(s: User["status"]) {
-  return {
-    active:   { background: "#dcfce7", color: "#166534" },
-    inactive: { background: "#fef9c3", color: "#854d0e" },
-    banned:   { background: "#fee2e2", color: "#991b1b" },
-  }[s];
-}
 function PlusIcon() {
   return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>;
 }

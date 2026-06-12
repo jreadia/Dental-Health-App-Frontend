@@ -8,6 +8,7 @@ interface UploadPageProps {
 export default function UploadPage({ onShowResult, onCancel }: UploadPageProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleBoxClick = () => {
@@ -61,10 +62,47 @@ export default function UploadPage({ onShowResult, onCancel }: UploadPageProps) 
         </svg>
       </div>
 
+      {/* Disclaimer Modal (shown once before using the feature) */}
+      {showDisclaimer && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-6">
+          <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl text-center">
+            <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-amber-100 flex items-center justify-center">
+              <svg className="w-7 h-7 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-[#00004d] mb-3">Disclaimer</h3>
+            <p className="text-slate-600 text-sm leading-relaxed mb-6">
+              This tool is part of a student/academic project and is <span className="font-semibold">not based on a clinical study</span> or
+              validated medical research. The results shown are for demonstration purposes only and should
+              <span className="font-semibold"> not be used as a substitute for professional dental advice, diagnosis, or treatment</span>.
+              Please consult a licensed dentist or doctor for any concerns about your dental health.
+            </p>
+            <button
+              onClick={() => setShowDisclaimer(false)}
+              className="w-full bg-[#00004d] text-white font-semibold py-3 rounded-xl hover:bg-blue-900 transition-colors"
+            >
+              I Understand, Continue
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="w-full max-w-2xl bg-white/90 backdrop-blur-sm rounded-[2rem] shadow-xl border border-white/40 p-10 z-10 relative">
-        <div className="text-center mb-10">
+        <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-[#00004d]">UPLOAD IMAGE</h2>
           <p className="text-slate-500 mt-2">Upload a photo of teeth for calculus checking</p>
+        </div>
+
+        {/* Persistent disclaimer banner */}
+        <div className="mb-6 flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+          <svg className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+          </svg>
+          <p className="text-xs text-amber-800 leading-relaxed">
+            <span className="font-semibold">Disclaimer:</span> This project is not based on a clinical study. Results are for
+            demonstration only — please consult a doctor or dentist for real dental concerns.
+          </p>
         </div>
 
         <div 

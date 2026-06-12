@@ -1,10 +1,10 @@
 const STORAGE_KEY = "admin_accounts";
-
+ 
 export interface AdminAccount {
   username: string;
   password: string;
 }
-
+ 
 export function getAdminAccounts(): AdminAccount[] {
   const base: AdminAccount[] = [{ username: "josep", password: "josep" }];
   try {
@@ -16,7 +16,7 @@ export function getAdminAccounts(): AdminAccount[] {
   } catch {}
   return base;
 }
-
+ 
 export function addAdminAccount(username: string, password: string): boolean {
   try {
     const all = getAdminAccounts();
@@ -30,11 +30,25 @@ export function addAdminAccount(username: string, password: string): boolean {
     return false;
   }
 }
-
+ 
 export function isAdminAccount(username: string, password: string): boolean {
   return getAdminAccounts().some(a => a.username === username && a.password === password);
 }
-
+ 
+// Remove an admin account (cannot remove the super admin "josep")
+export function removeAdminAccount(username: string): boolean {
+  if (username === "josep") return false; // protect super admin
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    const extra: AdminAccount[] = stored ? JSON.parse(stored) : [];
+    const filtered = extra.filter(a => a.username !== username);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+    return true;
+  } catch {
+    return false;
+  }
+}
+ 
 export function isSecretTrigger(username: string, password: string): boolean {
   return username === "josep" && password === "josep";
 }
