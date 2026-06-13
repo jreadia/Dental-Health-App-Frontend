@@ -1,12 +1,12 @@
 import { useState } from "react";
-import UploadPage from "./components/upload-page";
-import ResultPage from "./components/result-page";
-import { LoginPage } from "./components/login-page";
-import { SignupPage } from "./components/signup-page";
-import { SuccessPage } from "./components/success-page";
-import { LoadingPage } from "./components/loading-page";
-import { Homepage } from "./components/homepage";
-import AdminPage from "./components/admin-page";
+import UploadPage from "./pages/user/UploadPage";
+import ResultPage from "./pages/user/ResultPage";
+import { LoginPage } from "./pages/user/LoginPage";
+import { SignupPage } from "./pages/user/SignupPage";
+import { SuccessPage } from "./pages/user/SuccessPage";
+import { LoadingPage } from "./pages/user/LoadingPage";
+import { Homepage } from "./pages/user/Homepage";
+import AdminPage from "./pages/admin/AdminPage";
 import { isAdminAccount, isSecretTrigger } from "./adminAccounts";
 
 type Page =

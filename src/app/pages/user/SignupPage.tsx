@@ -1,4 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { PageLayout } from "../../components/ui/PageLayout";
+import { Button } from "../../components/ui/Button";
 
 interface SignupPageProps {
   onBackToLogin: () => void;
@@ -26,21 +28,11 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
       setError("Passwords do not match!");
       return;
     }
-    console.log("Sign up submitted:", { firstName, lastName, username, phoneNumber, address, birthday, password });
     onAccountCreated();
   };
 
   return (
-    <div
-      className="min-h-screen w-full flex items-center justify-center relative overflow-auto py-10 px-4"
-      style={{ backgroundColor: "#d4d4e8" }}
-    >
-      {/* Decorative blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full opacity-30" style={{ background: "radial-gradient(circle, #a78bfa, transparent)" }} />
-        <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #818cf8, transparent)" }} />
-      </div>
-
+    <PageLayout variant="blobs" className="flex items-center justify-center py-10 px-4">
       {/* SIGN UP badge */}
       <div
         className="absolute top-8 left-8 bg-[#00004d] text-white px-5 py-2 rounded-full shadow-lg z-20"
@@ -65,14 +57,14 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="bg-red-500/20 border border-red-400/40 text-red-200 px-3 py-2 rounded-xl text-xs text-center" style={{ fontWeight: "600" }}>
+              <div className="bg-red-500/20 border border-red-400/40 text-red-200 px-3 py-2 rounded-xl text-xs text-center font-semibold">
                 {error}
               </div>
             )}
 
             {/* Personal Info */}
             <div>
-              <p className="text-white/40 uppercase mb-2" style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "1.2px" }}>
+              <p className="text-white/40 uppercase mb-2 text-[10px] font-bold tracking-[1.2px]">
                 Personal Info
               </p>
               <div className="grid grid-cols-2 gap-2">
@@ -89,13 +81,13 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
                   title="Birthday"
                   required
                 />
-                {!birthday && <p className="text-white/40 mt-1 ml-1" style={{ fontSize: "10px" }}>Date of Birth</p>}
+                {!birthday && <p className="text-white/40 mt-1 ml-1 text-[10px]">Date of Birth</p>}
               </div>
             </div>
 
             {/* Contact */}
             <div>
-              <p className="text-white/40 uppercase mb-2" style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "1.2px" }}>
+              <p className="text-white/40 uppercase mb-2 text-[10px] font-bold tracking-[1.2px]">
                 Contact
               </p>
               <div className="grid grid-cols-2 gap-2">
@@ -106,7 +98,7 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
 
             {/* Account */}
             <div>
-              <p className="text-white/40 uppercase mb-2" style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "1.2px" }}>
+              <p className="text-white/40 uppercase mb-2 text-[10px] font-bold tracking-[1.2px]">
                 Account
               </p>
               <div className="space-y-2">
@@ -116,24 +108,20 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
                   <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm" className={inputClass} required />
                 </div>
                 {password && confirmPassword && password !== confirmPassword && (
-                  <p className="text-red-300 ml-1" style={{ fontSize: "11px" }}>Passwords don't match</p>
+                  <p className="text-red-300 ml-1 text-[11px]">Passwords don't match</p>
                 )}
               </div>
             </div>
 
             {/* Submit */}
-            <button
-              type="submit"
-              className="w-full rounded-xl px-6 py-2.5 transition-all shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]"
-              style={{ background: "linear-gradient(135deg, #7c3aed, #4f46e5)", color: "white", fontWeight: "700", fontSize: "14px" }}
-            >
+            <Button type="submit" variant="gradient" className="w-full rounded-xl py-2.5 h-auto">
               Create Account
-            </button>
+            </Button>
 
             <div className="text-center">
-              <p className="text-white/60" style={{ fontSize: "13px" }}>
+              <p className="text-white/60 text-[13px]">
                 Already have an account?{" "}
-                <button type="button" onClick={onBackToLogin} className="text-white hover:underline" style={{ fontWeight: "600" }}>
+                <button type="button" onClick={onBackToLogin} className="text-white hover:underline font-semibold">
                   Log in
                 </button>
               </p>
@@ -141,6 +129,6 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
           </form>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 }
