@@ -102,7 +102,7 @@ export function Homepage() {
                     <div key={item.id} className="flex justify-between items-center p-3 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-blue-200 transition-colors">
                       <div>
                         <p className="text-xs text-slate-400 font-medium mb-0.5">{item.date}</p>
-                        <p className="text-sm font-bold text-[#00004d]">{item.plaques} Plaque(s) Detected</p>
+                        <p className="text-sm font-bold text-[#00004d]">{item.plaques} Calculus Detected</p>
                       </div>
                       <StatusBadge status={item.status} />
                     </div>

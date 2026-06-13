@@ -67,7 +67,7 @@ export default function ResultPage() {
           {/* Amount */}
           <div className="flex items-center justify-between">
             <span className="text-sm font-semibold text-[#00004d]/70">Amount</span>
-            <span className="text-lg font-extrabold text-[#00004d]">{plaques} Plaque(s)</span>
+            <span className="text-lg font-extrabold text-[#00004d]">{plaques} Calculus</span>
           </div>
 
           {/* Oral Health Status */}
@@ -98,7 +98,7 @@ export default function ResultPage() {
             {/* Dynamic Status Banner */}
             <div className={`w-full border p-4 rounded-2xl mb-6 ${getStatusStyle(oralHealthStatus)}`}>
               <h3 className="text-xl font-black uppercase tracking-wide mb-1">{oralHealthStatus}</h3>
-              <p className="text-sm font-semibold opacity-90">{plaques} Plaque(s) Detected</p>
+              <p className="text-sm font-semibold opacity-90">{plaques} Calculus Detected</p>
             </div>
 
             {uploadedImage ? (

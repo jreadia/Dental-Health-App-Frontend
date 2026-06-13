@@ -9,12 +9,7 @@ import { Homepage } from "./pages/user/Homepage";
 import AdminPage from "./pages/admin/AdminPage";
 import { AdminLoginScreen } from "./pages/admin/AdminLoginScreen";
 
-export interface HistoryItem {
-  id: string;
-  date: string;
-  plaques: number;
-  status: string;
-}
+
 
 function ProtectedRoute({ children, adminOnly = false }: { children: React.ReactNode, adminOnly?: boolean }) {
   const isAuth = localStorage.getItem('isAuthenticated') === 'true';
