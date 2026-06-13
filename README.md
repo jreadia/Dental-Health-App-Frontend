@@ -118,3 +118,7 @@ Routing is managed by `react-router-dom` using standard URL paths. Protected Rou
 - Abstracted all complex vector graphics into dedicated React components.
 - Integrated frontend seamlessly with the live Node/Express/Firebase backend.
 - Replaced mock client-side auth with real JWT/Cookie based API requests.
+
+## Upcoming Features
+
+- **Admin Authentication Overhaul:** Transitioning the admin login system from legacy pre-determined username/password pairs to a fully integrated Firebase Email/Password authentication flow to match the user architecture and improve security.
