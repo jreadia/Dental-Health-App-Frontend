@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { PageLayout } from "../../components/ui/PageLayout";
 import { Button } from "../../components/ui/Button";
 import { StatusBadge } from "../../components/ui/StatusBadge";
 import { Home, LogOut, FileClock, ChevronRight } from "lucide-react";
+import { getUserImageHistory } from "../../../api/dental";
+import { logoutUser } from "../../../api/auth";
 
 interface HistoryItem {
   id: string;
@@ -11,23 +14,63 @@ interface HistoryItem {
   status: string;
 }
 
-interface HomepageProps {
-  onUploadClick?: () => void;
-  onHomeClick?: () => void;
-  onLogout?: () => void;
-  history?: HistoryItem[];
-}
+export function Homepage() {
+  const navigate = useNavigate();
+  const [history, setHistory] = useState<HistoryItem[]>([]);
 
-export function Homepage({ onUploadClick, onHomeClick, onLogout, history = [] }: HomepageProps) {
+  useEffect(() => {
+    // Prevent redundant Firebase reads to save free tier quotas
+    const cachedHistory = sessionStorage.getItem('dentalHistory');
+    if (cachedHistory) {
+      setHistory(JSON.parse(cachedHistory));
+      return;
+    }
+
+    getUserImageHistory()
+      .then((data: any) => {
+        if (Array.isArray(data)) {
+          const fetchedHistory = data.map((item: any) => {
+            let parsedDate = new Date().toLocaleDateString();
+            if (item.uploadDate) {
+              if (item.uploadDate._seconds) {
+                parsedDate = new Date(item.uploadDate._seconds * 1000).toLocaleDateString();
+              } else {
+                parsedDate = new Date(item.uploadDate).toLocaleDateString();
+              }
+            } else if (item.createdAt) {
+              parsedDate = new Date(item.createdAt).toLocaleDateString();
+            }
+
+            return {
+              id: item.imageId || item.id || item._id || Date.now().toString(),
+              date: parsedDate,
+              plaques: item.mlResults?.calculusAmount || 0,
+              status: item.mlResults?.overall_diagnosis || "Healthy"
+            };
+          });
+          const sorted = fetchedHistory.reverse();
+          setHistory(sorted);
+          sessionStorage.setItem('dentalHistory', JSON.stringify(sorted));
+        }
+      })
+      .catch((err) => console.error("Failed to fetch history", err));
+  }, []);
+
+  const handleLogout = async () => {
+    try { await logoutUser(); } catch(e) {}
+    localStorage.removeItem('isAuthenticated');
+    sessionStorage.removeItem('dentalHistory');
+    navigate('/login');
+  };
   return (
     <PageLayout>
       {/* Top Bar: Home + Logout */}
       <div className="absolute top-6 left-6 right-6 flex justify-between items-center z-20">
-        <Button onClick={onHomeClick} variant="default" className="rounded-full">
+        <Button onClick={() => navigate('/homepage')} variant="default" className="rounded-full">
           <Home className="w-4 h-4 mr-2" /> Home
         </Button>
 
-        <Button onClick={onLogout} variant="secondary" className="rounded-full">
+        <Button onClick={handleLogout} variant="secondary" className="rounded-full">
           <LogOut className="w-4 h-4 mr-2" /> Logout
         </Button>
       </div>
@@ -93,7 +136,7 @@ export function Homepage({ onUploadClick, onHomeClick, onLogout, history = [] }:
                 <line x1="81" y1="51" x2="88" y2="58" stroke="#00004d" strokeWidth="2" strokeLinecap="round" />
               </svg>
               <button
-                onClick={onUploadClick}
+                onClick={() => navigate('/upload')}
                 className="absolute bottom-0 right-0 bg-[#00004d] text-white rounded-full p-3 hover:opacity-90 transition-opacity shadow-lg"
               >
                 <ChevronRight className="w-6 h-6" strokeWidth={3} />

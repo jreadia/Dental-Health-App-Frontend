@@ -1,7 +1,7 @@
 import React, { useRef, useState, ChangeEvent, DragEvent } from 'react';
 
 interface ImageDropzoneProps {
-  onImageSelected: (imageUrl: string | null) => void;
+  onImageSelected: (file: File | null, imageUrl: string | null) => void;
   selectedImage: string | null;
 }
 
@@ -19,7 +19,7 @@ export function ImageDropzone({ onImageSelected, selectedImage }: ImageDropzoneP
     const file = e.target.files?.[0];
     if (file && file.type.startsWith('image/')) {
       const imageUrl = URL.createObjectURL(file);
-      onImageSelected(imageUrl);
+      onImageSelected(file, imageUrl);
     }
   };
 
@@ -39,13 +39,13 @@ export function ImageDropzone({ onImageSelected, selectedImage }: ImageDropzoneP
     const file = e.dataTransfer.files?.[0];
     if (file && file.type.startsWith('image/')) {
       const imageUrl = URL.createObjectURL(file);
-      onImageSelected(imageUrl);
+      onImageSelected(file, imageUrl);
     }
   };
 
   const handleRemoveImage = (e: React.MouseEvent) => {
     e.stopPropagation(); 
-    onImageSelected(null);
+    onImageSelected(null, null);
     if (fileInputRef.current) {
       fileInputRef.current.value = ''; 
     }

@@ -1,16 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PageLayout } from "../../components/ui/PageLayout";
 import { Button } from "../../components/ui/Button";
-
-interface SignupPageProps {
-  onBackToLogin: () => void;
-  onAccountCreated: () => void;
-}
 
 const inputClass =
   "w-full rounded-xl px-4 py-3 outline-none text-sm bg-white/10 text-white placeholder-white/50 border border-white/20 focus:border-white/60 focus:bg-white/15 transition-all";
 
-export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps) {
+export function SignupPage() {
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
@@ -21,14 +18,34 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       return;
     }
-    onAccountCreated();
+
+    setLoading(true);
+    try {
+      const { registerUser } = await import("../../../api/auth");
+      await registerUser({
+        firstName,
+        lastName,
+        email: username,
+        password,
+        phoneNumber,
+        address,
+        birthday
+      });
+      navigate('/success');
+    } catch (err: any) {
+      setError(err.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -114,14 +131,14 @@ export function SignupPage({ onBackToLogin, onAccountCreated }: SignupPageProps)
             </div>
 
             {/* Submit */}
-            <Button type="submit" variant="gradient" className="w-full rounded-xl py-2.5 h-auto">
-              Create Account
+            <Button type="submit" variant="gradient" className="w-full rounded-xl py-2.5 h-auto" disabled={loading}>
+              {loading ? "Creating..." : "Create Account"}
             </Button>
 
             <div className="text-center">
               <p className="text-white/60 text-[13px]">
                 Already have an account?{" "}
-                <button type="button" onClick={onBackToLogin} className="text-white hover:underline font-semibold">
+                <button type="button" onClick={() => navigate('/login')} className="text-white hover:underline font-semibold">
                   Log in
                 </button>
               </p>

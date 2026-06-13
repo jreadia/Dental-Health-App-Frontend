@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation, useNavigate, Navigate } from "react-router-dom";
 import { PageLayout } from "../../components/ui/PageLayout";
 import { StatusBadge } from "../../components/ui/StatusBadge";
 import { Button } from "../../components/ui/Button";
@@ -11,13 +12,16 @@ interface HistoryItem {
   status: string;
 }
 
-interface ResultPageProps {
-  onGoHome?: () => void;
-  uploadedImage?: string | null;
-  resultData?: HistoryItem | null;
-}
+export default function ResultPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const { resultData, uploadedImage } = location.state || {};
 
-export default function ResultPage({ onGoHome, uploadedImage, resultData }: ResultPageProps) {
+  if (!resultData) {
+    return <Navigate to="/homepage" replace />;
+  }
+
   const plaques = resultData?.plaques ?? 0;
   const calculusDetected = plaques > 0;
 
@@ -75,7 +79,7 @@ export default function ResultPage({ onGoHome, uploadedImage, resultData }: Resu
 
         <div className="flex flex-col space-y-4 w-full sm:w-auto">
           <Button 
-            onClick={onGoHome}
+            onClick={() => navigate('/homepage')}
             size="lg"
             className="px-10 py-4 h-auto shadow-lg hover:-translate-y-1 transition-all"
           >
@@ -98,11 +102,11 @@ export default function ResultPage({ onGoHome, uploadedImage, resultData }: Resu
             </div>
 
             {uploadedImage ? (
-              <div className="w-full flex-1 border-2 border-slate-200 rounded-2xl overflow-hidden bg-black flex items-center justify-center shadow-inner">
+              <div className="w-full flex-1 border-2 border-slate-200 rounded-2xl overflow-hidden bg-black flex items-center justify-center shadow-inner p-2">
                 <img 
                   src={uploadedImage} 
                   alt="Scanned Teeth" 
-                  className="w-full h-full object-cover opacity-90"
+                  className="w-full h-full object-contain opacity-90 rounded-xl"
                 />
               </div>
             ) : (

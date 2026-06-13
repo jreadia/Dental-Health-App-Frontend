@@ -1,23 +1,27 @@
 "use client";
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AdminHomepage } from "./components/AdminHomepage";
 import { DataDashboard } from "./components/DataDashboard";
 import { AddAdminModal } from "./components/AddAdminModal";
+import { logoutAdmin } from "../../../api/auth";
 
 type View = "home" | "data";
 
-interface AdminPageProps {
-  onLogout: () => void;
-  loggedInAs?: string;
-}
-
-export default function AdminPage({
-  onLogout,
-  loggedInAs = "Josep",
-}: AdminPageProps) {
+export default function AdminPage() {
+  const navigate = useNavigate();
+  const loggedInAs = localStorage.getItem("loggedInAs") || "Admin";
   const [view, setView] = useState<View>("home");
   const [showAdd, setShowAdd] = useState(false);
+
+  const handleLogout = async () => {
+    try { await logoutAdmin(); } catch(e) {}
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('isAdmin');
+    localStorage.removeItem('loggedInAs');
+    navigate('/login');
+  };
 
   return (
     <>
@@ -26,7 +30,7 @@ export default function AdminPage({
           <AdminHomepage
             onAccessData={() => setView("data")}
             onAddAdmin={() => setShowAdd(true)}
-            onLogout={onLogout}
+            onLogout={handleLogout}
             loggedInAs={loggedInAs}
           />
           {showAdd && <AddAdminModal onClose={() => setShowAdd(false)} />}

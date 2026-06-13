@@ -1,18 +1,17 @@
 import { useEffect } from "react";
 import { CheckCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-interface SuccessPageProps {
-  onRedirectToLogin: () => void;
-}
+export function SuccessPage() {
+  const navigate = useNavigate();
 
-export function SuccessPage({ onRedirectToLogin }: SuccessPageProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      onRedirectToLogin();
+      navigate('/login');
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [onRedirectToLogin]);
+  }, [navigate]);
 
   return (
     <div className="size-full flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: '#d4d4e8' }}>

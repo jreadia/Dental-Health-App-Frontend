@@ -1,17 +1,16 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-interface LoadingPageProps {
-  onLoadingComplete: () => void;
-}
+export function LoadingPage() {
+  const navigate = useNavigate();
 
-export function LoadingPage({ onLoadingComplete }: LoadingPageProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      onLoadingComplete();
+      navigate('/homepage');
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, [onLoadingComplete]);
+  }, [navigate]);
 
   return (
     <div className="size-full flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: '#d4d4e8' }}>
