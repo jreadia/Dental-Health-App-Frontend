@@ -13,7 +13,8 @@ export function AdminAccountsList() {
   async function fetchAccounts() {
     try {
       const data = await getAdmins();
-      setAccounts(Array.isArray(data) ? data : []);
+      const accountsArray = data?.admins || data;
+      setAccounts(Array.isArray(accountsArray) ? accountsArray : []);
     } catch (e) {
       console.error("Failed to fetch admins", e);
     }
@@ -36,7 +37,7 @@ export function AdminAccountsList() {
       </h3>
       <div className="flex flex-col gap-2">
         {accounts.map((a: any) => {
-          const id = a.id || a.uid || a._id;
+          const id = a.adminId || a.id || a.uid || a._id;
           return (
             <div 
               key={id} 
@@ -44,7 +45,7 @@ export function AdminAccountsList() {
             >
               <span className="font-bold text-[#0a2378] text-sm">{a.email || a.username || "Unknown Admin"}</span>
               
-              {a.email === "josep@example.com" ? (
+              {a.role === 'super_admin' ? (
                 <StatusBadge variant="superadmin">SUPER ADMIN</StatusBadge>
               ) : confirmId === id ? (
                 <div className="flex gap-1.5">

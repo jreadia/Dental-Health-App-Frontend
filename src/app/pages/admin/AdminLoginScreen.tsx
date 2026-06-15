@@ -14,10 +14,17 @@ export function AdminLoginScreen() {
     setError("");
     setLoading(true);
     try {
-      await loginAdmin({ email: username, password });
+      const response = await loginAdmin({ email: username, password });
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('isAdmin', 'true');
       localStorage.setItem('loggedInAs', username);
+      
+      if (response?.admin?.isSuperAdmin) {
+        localStorage.setItem('isSuperAdmin', 'true');
+      } else {
+        localStorage.removeItem('isSuperAdmin');
+      }
+
       navigate('/admin');
     } catch (err: any) {
       setError(err.message || "Invalid admin credentials. Access denied.");
@@ -40,13 +47,13 @@ export function AdminLoginScreen() {
 
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            <label style={als.label}>ADMIN USERNAME</label>
+            <label style={als.label}>ADMIN EMAIL</label>
             <input
               style={als.input}
               type="text"
               value={username}
               onChange={e => { setUsername(e.target.value); setError(""); }}
-              placeholder="Enter admin username"
+              placeholder="Enter admin email"
               autoComplete="off"
               required
             />
