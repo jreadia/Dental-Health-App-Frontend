@@ -26,8 +26,12 @@ export function AdminLoginScreen() {
       }
 
       navigate('/admin');
-    } catch (err: any) {
-      setError(err.message || "Invalid admin credentials. Access denied.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Invalid admin credentials. Access denied.");
+      } else {
+        setError("Invalid admin credentials. Access denied.");
+      }
     } finally {
       setLoading(false);
     }

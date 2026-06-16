@@ -29,8 +29,12 @@ export function LoginPage() {
       await loginUser({ email: username, password });
       localStorage.setItem('isAuthenticated', 'true');
       navigate("/homepage");
-    } catch (err: any) {
-      setError(err.message || "Invalid credentials.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Invalid credentials.");
+      } else {
+        setError("Invalid credentials.");
+      }
     } finally {
       setLoading(false);
     }
@@ -96,7 +100,7 @@ export function LoginPage() {
                 <button
                   type="button"
                   onClick={() => navigate('/signup')}
-                  className="text-white hover:underline font-semibold"
+                  className="text-white hover:underline font-semibold cursor-pointer"
                 >
                   Sign up
                 </button>

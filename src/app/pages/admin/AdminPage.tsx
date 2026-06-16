@@ -16,7 +16,7 @@ export default function AdminPage() {
   const [showAdd, setShowAdd] = useState(false);
 
   const handleLogout = async () => {
-    try { await logoutAdmin(); } catch(e) {}
+    try { await logoutAdmin(); } catch(e) { console.error("Logout error", e); }
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('isAdmin');
     localStorage.removeItem('loggedInAs');

@@ -16,19 +16,19 @@ interface HistoryItem {
 
 export function Homepage() {
   const navigate = useNavigate();
-  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [history, setHistory] = useState<HistoryItem[]>(() => {
+    const cachedHistory = sessionStorage.getItem('dentalHistory');
+    return cachedHistory ? JSON.parse(cachedHistory) : [];
+  });
 
   useEffect(() => {
     // Prevent redundant Firebase reads to save free tier quotas
-    const cachedHistory = sessionStorage.getItem('dentalHistory');
-    if (cachedHistory) {
-      setHistory(JSON.parse(cachedHistory));
-      return;
-    }
+    if (history.length > 0) return;
 
     getUserImageHistory()
-      .then((data: any) => {
+      .then((data: unknown) => {
         if (Array.isArray(data)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const fetchedHistory = data.map((item: any) => {
             let parsedDate = new Date().toLocaleDateString();
             if (item.uploadDate) {
@@ -54,10 +54,11 @@ export function Homepage() {
         }
       })
       .catch((err) => console.error("Failed to fetch history", err));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogout = async () => {
-    try { await logoutUser(); } catch(e) {}
+    try { await logoutUser(); } catch(e) { console.error("Logout failed", e); }
     localStorage.removeItem('isAuthenticated');
     sessionStorage.removeItem('dentalHistory');
     navigate('/login');
@@ -137,7 +138,7 @@ export function Homepage() {
               </svg>
               <button
                 onClick={() => navigate('/upload')}
-                className="absolute bottom-0 right-0 bg-[#00004d] text-white rounded-full p-3 hover:opacity-90 transition-opacity shadow-lg"
+                className="absolute bottom-0 right-0 bg-[#00004d] text-white rounded-full p-3 hover:opacity-90 transition-opacity shadow-lg cursor-pointer"
               >
                 <ChevronRight className="w-6 h-6" strokeWidth={3} />
               </button>

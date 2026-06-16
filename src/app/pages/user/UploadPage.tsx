@@ -91,14 +91,15 @@ export default function UploadPage() {
                   }
 
                   navigate('/results', { state: { resultData: newResult, uploadedImage: imageUrl } });
-                } catch (e) {
+                } catch (e: unknown) {
+                  console.error(e);
                   alert("Failed to upload image. Please try again.");
                 } finally {
                   setIsUploading(false);
                 }
               }}
               className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95 ${
-                selectedFile ? 'bg-[#00004d] text-white hover:bg-blue-900' : 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                selectedFile ? 'bg-[#00004d] text-white hover:bg-blue-900 cursor-pointer' : 'bg-slate-300 text-slate-500 cursor-not-allowed'
               }`}
             >
               <ArrowRight className="w-8 h-8" strokeWidth={3} />

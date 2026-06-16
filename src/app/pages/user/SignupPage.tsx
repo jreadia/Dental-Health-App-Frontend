@@ -41,8 +41,12 @@ export function SignupPage() {
         birthday
       });
       navigate('/success');
-    } catch (err: any) {
-      setError(err.message || "Registration failed. Please try again.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Registration failed. Please try again.");
+      } else {
+        setError("Registration failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -138,7 +142,7 @@ export function SignupPage() {
             <div className="text-center">
               <p className="text-white/60 text-[13px]">
                 Already have an account?{" "}
-                <button type="button" onClick={() => navigate('/login')} className="text-white hover:underline font-semibold">
+                <button type="button" onClick={() => navigate('/login')} className="text-white hover:underline font-semibold cursor-pointer">
                   Log in
                 </button>
               </p>

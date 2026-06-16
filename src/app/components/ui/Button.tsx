@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { clsx, type ClassValue } from "clsx"
@@ -8,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-full transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-950 disabled:pointer-events-none disabled:opacity-50 font-semibold",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-full transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-950 disabled:pointer-events-none disabled:opacity-50 font-semibold cursor-pointer",
   {
     variants: {
       variant: {
@@ -43,7 +44,8 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ({ className, variant, size, asChild: _asChild = false, ...props }, ref) => {
     const Comp = "button"
     return (
       <Comp
