@@ -8,7 +8,7 @@ export async function deleteAdmin(id: string) {
   return fetchClient(`/admins/${id}`, { method: 'DELETE' });
 }
 
-export async function updateAdmin(id: string, data: any) {
+export async function updateAdmin(id: string, data: unknown) {
   return fetchClient(`/admins/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),

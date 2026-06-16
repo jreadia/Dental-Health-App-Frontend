@@ -2,23 +2,34 @@ import React, { useState, useEffect } from "react";
 import { getAdmins, deleteAdmin } from "../../../../api/admins";
 import { StatusBadge } from "../../../components/ui/StatusBadge";
 
-export function AdminAccountsList() {
-  const [accounts, setAccounts] = useState<any[]>([]);
-  const [confirmId, setConfirmId] = useState<string | null>(null);
+interface AdminAccount {
+  id?: string;
+  adminId?: string;
+  uid?: string;
+  _id?: string;
+  email?: string;
+  username?: string;
+  role?: string;
+}
 
-  useEffect(() => {
-    fetchAccounts();
-  }, []);
+export function AdminAccountsList() {
+  const [accounts, setAccounts] = useState<AdminAccount[]>([]);
+  const [confirmId, setConfirmId] = useState<string | null>(null);
 
   async function fetchAccounts() {
     try {
-      const data = await getAdmins();
-      const accountsArray = data?.admins || data;
+      const data = await getAdmins() as { admins?: AdminAccount[] } | AdminAccount[];
+      const accountsArray = data && typeof data === 'object' && 'admins' in data ? data.admins : data;
       setAccounts(Array.isArray(accountsArray) ? accountsArray : []);
     } catch (e) {
       console.error("Failed to fetch admins", e);
     }
   }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchAccounts();
+  }, []);
 
   async function handleRemove(id: string) {
     try {
@@ -36,8 +47,8 @@ export function AdminAccountsList() {
         EXISTING ADMIN ACCOUNTS
       </h3>
       <div className="flex flex-col gap-2">
-        {accounts.map((a: any) => {
-          const id = a.adminId || a.id || a.uid || a._id;
+        {accounts.map((a: AdminAccount) => {
+          const id = a.adminId || a.id || a.uid || a._id || "";
           return (
             <div 
               key={id} 

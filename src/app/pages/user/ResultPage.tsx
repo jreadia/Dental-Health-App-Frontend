@@ -5,12 +5,6 @@ import { StatusBadge } from "../../components/ui/StatusBadge";
 import { Button } from "../../components/ui/Button";
 import { Image as ImageIcon } from "lucide-react";
 
-interface HistoryItem {
-  id: string;
-  date: string;
-  plaques: number;
-  status: string;
-}
 
 export default function ResultPage() {
   const location = useLocation();

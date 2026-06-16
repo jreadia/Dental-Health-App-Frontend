@@ -30,7 +30,7 @@ export async function fetchClient(endpoint: string, options: RequestInit = {}) {
   let data;
   try {
     data = await response.json();
-  } catch (error) {
+  } catch {
     data = null;
   }
 

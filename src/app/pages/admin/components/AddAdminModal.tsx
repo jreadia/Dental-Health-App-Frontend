@@ -22,8 +22,12 @@ export function AddAdminModal({ onClose }: { onClose: () => void }) {
       } else {
         setStatus("success");
       }
-    } catch (err: any) {
-      setErrorMessage(err.message || "Failed to create admin");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMessage(err.message || "Failed to create admin");
+      } else {
+        setErrorMessage("Failed to create admin");
+      }
       setStatus("error");
     }
   }
