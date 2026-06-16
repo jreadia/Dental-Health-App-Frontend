@@ -1,4 +1,4 @@
-export const API_BASE_URL = "https://dental-health-backend-x7b5.onrender.com/api/v1";
+export const API_BASE_URL = "/api/v1";
 
 /**
  * A wrapper around native fetch that automatically includes credentials (cookies)
