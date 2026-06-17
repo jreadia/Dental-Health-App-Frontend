@@ -55,6 +55,13 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
     }
   };
 
+  const handleClearSearch = () => {
+    setInputValue('');
+    setSearchQuery('');
+    setCurrentPage(0);
+    setCursors([null]);
+  };
+
   const handleNextPage = () => {
     if (hasMore) {
       const nextPage = currentPage + 1;
@@ -114,16 +121,25 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
       {/* Search Bar */}
-      <div className="p-4 border-b border-gray-100 flex items-center gap-2">
+      <div className="p-4 border-b border-gray-100 flex items-center gap-2 relative">
         <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
         <input 
           type="text" 
-          placeholder="Search users..." 
-          className="w-full outline-none text-gray-700 placeholder-gray-400"
+          placeholder="Search by email address" 
+          className="w-full outline-none text-gray-700 placeholder-gray-400 pr-8"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleSearchKeyDown}
         />
+        {(inputValue || searchQuery) && (
+          <button 
+            onClick={handleClearSearch}
+            className="absolute right-4 p-1.5 bg-gray-100 text-gray-500 hover:text-gray-700 hover:bg-gray-200 rounded-full transition-colors flex items-center justify-center"
+            title="Clear search"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        )}
       </div>
 
       {/* Table */}
