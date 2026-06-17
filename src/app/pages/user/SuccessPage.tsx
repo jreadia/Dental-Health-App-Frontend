@@ -1,17 +1,21 @@
 import { useEffect } from "react";
-import { CheckCircle } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { CheckCircle, Info } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export function SuccessPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const wasExistingUser = location.state?.wasExistingUser;
 
   useEffect(() => {
+    // Give them more time to read if there's a notice
+    const timeout = wasExistingUser ? 8000 : 3000;
     const timer = setTimeout(() => {
       navigate('/login');
-    }, 3000);
+    }, timeout);
 
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, wasExistingUser]);
 
   return (
     <div className="size-full flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: '#d4d4e8' }}>
@@ -27,20 +31,32 @@ export function SuccessPage() {
 
       {/* Success Card */}
       <div className="w-full max-w-md px-6 relative z-10">
-        <div className="bg-[#00004d] rounded-2xl px-8 py-16 shadow-2xl text-center">
+        <div className="bg-[#00004d] rounded-3xl p-8 shadow-2xl text-center">
           <div className="flex justify-center mb-6">
-            <CheckCircle className="size-20 text-white" strokeWidth={1.5} />
+            <CheckCircle className="size-16 text-green-400" strokeWidth={2} />
           </div>
 
-          <h1 className="text-white mb-4" style={{ fontSize: '28px', fontWeight: '700', letterSpacing: '0.5px' }}>
-            SUCCESS!
+          <h1 className="text-white mb-3" style={{ fontSize: '26px', fontWeight: '700' }}>
+            Account Created!
           </h1>
 
-          <p className="text-white mb-8" style={{ fontSize: '16px', fontWeight: '400' }}>
-            Your account has been created successfully
+          <p className="text-white/80 mb-6" style={{ fontSize: '15px' }}>
+            Your user profile has been set up successfully.
           </p>
 
-          <div className="text-white text-sm" style={{ fontWeight: '400', opacity: 0.8 }}>
+          {wasExistingUser && (
+            <div className="bg-blue-500/20 border border-blue-400/30 rounded-xl p-4 mb-6 text-left">
+              <div className="flex items-center gap-2 mb-2">
+                <Info className="w-5 h-5 text-blue-300" />
+                <span className="font-semibold text-blue-200">Important Notice</span>
+              </div>
+              <p className="text-blue-100/90 text-sm leading-relaxed">
+                We detected that you already have an Admin account. Your password has been <strong>updated</strong> to the one you just entered. Please use this new password to log into both the Admin and User portals.
+              </p>
+            </div>
+          )}
+
+          <div className="text-white/60 text-sm animate-pulse">
             Redirecting to login page...
           </div>
         </div>

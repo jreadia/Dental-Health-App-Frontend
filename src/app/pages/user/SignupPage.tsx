@@ -31,7 +31,7 @@ export function SignupPage() {
     setLoading(true);
     try {
       const { registerUser } = await import("../../../api/auth");
-      await registerUser({
+      const res = await registerUser({
         firstName,
         lastName,
         email: username,
@@ -40,7 +40,7 @@ export function SignupPage() {
         address,
         birthday
       });
-      navigate('/success');
+      navigate('/success', { state: { wasExistingUser: res?.user?.wasExistingUser } });
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || "Registration failed. Please try again.");
