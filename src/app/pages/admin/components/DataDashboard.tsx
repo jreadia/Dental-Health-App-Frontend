@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AdminAccountsList } from "./AdminAccountsList";
+import { UserSummaryCards } from "./UserSummaryCards";
+import { UserManagementTable } from "./UserManagementTable";
+import { getUserStats, UserStats } from "../../../../api/users";
 
 interface DataDashboardProps {
   onBack: () => void;
@@ -7,6 +10,25 @@ interface DataDashboardProps {
 }
 
 export function DataDashboard({ onBack, loggedInAs }: DataDashboardProps) {
+  const [stats, setStats] = useState<UserStats | null>(null);
+  const [loadingStats, setLoadingStats] = useState(true);
+
+  const fetchStats = async () => {
+    try {
+      const data = await getUserStats();
+      setStats(data);
+    } catch (e) {
+      console.error("Failed to fetch user stats", e);
+    } finally {
+      setLoadingStats(false);
+    }
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchStats();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#f8faff] font-sans">
       <header className="bg-[#0a2378] text-white flex items-center gap-4 py-5 px-8">
@@ -22,8 +44,12 @@ export function DataDashboard({ onBack, loggedInAs }: DataDashboardProps) {
         </span>
       </header>
 
-      {/* Admin accounts list */}
-      <div className="py-6 px-8">
+      <div className="py-6 px-8 max-w-7xl mx-auto">
+        <UserSummaryCards stats={stats} loading={loadingStats} />
+        
+        <UserManagementTable onStatsChange={fetchStats} />
+
+        {/* Existing Admin accounts list */}
         <AdminAccountsList />
       </div>
     </div>

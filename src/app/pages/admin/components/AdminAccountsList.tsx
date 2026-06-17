@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAdmins, deleteAdmin } from "../../../../api/admins";
 import { StatusBadge } from "../../../components/ui/StatusBadge";
+import { Modal } from "../../../components/ui/Modal";
 
 interface AdminAccount {
   id?: string;
@@ -15,6 +16,7 @@ interface AdminAccount {
 export function AdminAccountsList() {
   const [accounts, setAccounts] = useState<AdminAccount[]>([]);
   const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [isRemoving, setIsRemoving] = useState(false);
 
   async function fetchAccounts() {
     try {
@@ -31,14 +33,18 @@ export function AdminAccountsList() {
     fetchAccounts();
   }, []);
 
-  async function handleRemove(id: string) {
+  async function confirmRemove() {
+    if (!confirmId) return;
+    setIsRemoving(true);
     try {
-      await deleteAdmin(id);
+      await deleteAdmin(confirmId);
       await fetchAccounts();
     } catch (e) {
       console.error("Failed to delete admin", e);
+    } finally {
+      setIsRemoving(false);
+      setConfirmId(null);
     }
-    setConfirmId(null);
   }
 
   return (
@@ -58,22 +64,6 @@ export function AdminAccountsList() {
               
               {a.role === 'super_admin' ? (
                 <StatusBadge variant="superadmin">SUPER ADMIN</StatusBadge>
-              ) : confirmId === id ? (
-                <div className="flex gap-1.5">
-                  <span className="text-xs text-red-800 self-center mr-1">Remove?</span>
-                  <button 
-                    onClick={() => handleRemove(id)} 
-                    className="bg-[#eff6ff] border border-[#bfdbfe] text-[#1d4ed8] rounded-md py-[5px] px-3 text-[12px] cursor-pointer font-sans hover:bg-blue-100 transition-colors"
-                  >
-                    Yes
-                  </button>
-                  <button 
-                    onClick={() => setConfirmId(null)} 
-                    className="bg-[#eff6ff] border border-[#bfdbfe] text-[#1d4ed8] rounded-md py-[5px] px-3 text-[12px] cursor-pointer font-sans hover:bg-blue-100 transition-colors"
-                  >
-                    No
-                  </button>
-                </div>
               ) : (
                 <button 
                   onClick={() => setConfirmId(id)} 
@@ -86,6 +76,35 @@ export function AdminAccountsList() {
           );
         })}
       </div>
+
+      {/* Confirmation Modal */}
+      <Modal 
+        isOpen={confirmId !== null} 
+        onClose={() => setConfirmId(null)}
+        title="Remove Admin"
+      >
+        <p className="text-gray-600 mb-6">
+          Are you sure you want to remove this administrator account? They will lose all access to the admin dashboard.
+        </p>
+        <div className="flex justify-end gap-3">
+          <button 
+            onClick={() => setConfirmId(null)}
+            className="px-4 py-2 rounded-xl text-sm font-semibold border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
+            disabled={isRemoving}
+          >
+            Cancel
+          </button>
+          <button 
+            onClick={confirmRemove}
+            className="px-4 py-2 rounded-xl text-sm font-semibold bg-red-600 text-white hover:bg-red-700 transition-colors flex items-center justify-center min-w-[80px]"
+            disabled={isRemoving}
+          >
+            {isRemoving ? (
+              <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            ) : "Remove"}
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }

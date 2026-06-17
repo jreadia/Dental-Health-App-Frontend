@@ -10,6 +10,9 @@ const badgeVariants = cva(
         healthy: "bg-emerald-100 text-emerald-700 border border-emerald-200",
         mild: "bg-yellow-100 text-yellow-700 border border-yellow-200",
         unhealthy: "bg-rose-100 text-rose-700 border border-rose-200",
+        active: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+        inactive: "bg-yellow-100 text-yellow-700 border border-yellow-200",
+        banned: "bg-rose-100 text-rose-700 border border-rose-200",
         admin: "bg-[#0a2378]/10 text-[#0a2378] border border-[#0a2378]/20",
         superadmin: "bg-[#0a2378] text-white border border-[#0a2378]",
         default: "bg-slate-100 text-slate-800 border border-slate-200",
@@ -35,6 +38,9 @@ export function StatusBadge({ className, variant, status, children, ...props }: 
     if (s === "healthy") activeVariant = "healthy";
     else if (s === "mild") activeVariant = "mild";
     else if (s === "unhealthy") activeVariant = "unhealthy";
+    else if (s === "active") activeVariant = "active";
+    else if (s === "inactive") activeVariant = "inactive";
+    else if (s === "banned") activeVariant = "banned";
     else if (s === "admin") activeVariant = "admin";
     else if (s === "super admin") activeVariant = "superadmin";
   }
