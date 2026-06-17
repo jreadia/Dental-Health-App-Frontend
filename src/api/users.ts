@@ -4,7 +4,6 @@ export interface UserStats {
   total: number;
   active: number;
   inactive: number;
-  banned: number;
 }
 
 export interface User {

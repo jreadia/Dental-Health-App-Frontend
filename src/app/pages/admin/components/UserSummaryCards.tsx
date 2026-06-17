@@ -8,7 +8,7 @@ interface UserSummaryCardsProps {
 
 export function UserSummaryCards({ stats, loading }: UserSummaryCardsProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
       <Card 
         title="Total Users" 
         value={stats?.total ?? 0} 
@@ -28,13 +28,6 @@ export function UserSummaryCards({ stats, loading }: UserSummaryCardsProps) {
         value={stats?.inactive ?? 0} 
         colorClass="text-yellow-500" 
         borderClass="border-yellow-400"
-        loading={loading}
-      />
-      <Card 
-        title="Banned" 
-        value={stats?.banned ?? 0} 
-        colorClass="text-red-500" 
-        borderClass="border-red-400"
         loading={loading}
       />
     </div>
