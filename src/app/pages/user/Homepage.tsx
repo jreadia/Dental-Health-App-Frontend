@@ -16,6 +16,7 @@ interface HistoryItem {
 
 export function Homepage() {
   const navigate = useNavigate();
+  const [isFetchingImage, setIsFetchingImage] = useState(false);
   const [history, setHistory] = useState<HistoryItem[]>(() => {
     const cachedHistory = sessionStorage.getItem('dentalHistory');
     return cachedHistory ? JSON.parse(cachedHistory) : [];
@@ -58,13 +59,54 @@ export function Homepage() {
   }, []);
 
   const handleLogout = async () => {
-    try { await logoutUser(); } catch(e) { console.error("Logout failed", e); }
-    localStorage.removeItem('isAuthenticated');
-    sessionStorage.removeItem('dentalHistory');
-    navigate('/login');
+    try {
+      await logoutUser();
+      localStorage.removeItem('isAuthenticated');
+      sessionStorage.removeItem('dentalHistory');
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
   };
+
+  const handleScanClick = async (item: HistoryItem) => {
+    setIsFetchingImage(true);
+    try {
+      const { getDentalImageById } = await import("../../../api/dental");
+      const res: unknown = await getDentalImageById(item.id);
+      
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const imageDetails = (res as { data?: any })?.data || res;
+      
+      const imageUrl = imageDetails.annotatedImageUrl || imageDetails.originalImageUrl || imageDetails.imageUrl;
+      
+      const newResult = {
+        id: imageDetails.imageId || imageDetails.id || item.id,
+        date: imageDetails.uploadDate ? new Date(imageDetails.uploadDate).toLocaleDateString() : item.date,
+        plaques: imageDetails.mlResults?.calculusAmount || item.plaques,
+        status: imageDetails.mlResults?.overall_diagnosis || item.status,
+      };
+
+      navigate('/results', { state: { resultData: newResult, uploadedImage: imageUrl } });
+    } catch (err) {
+      console.error("Failed to fetch image details:", err);
+      alert("Failed to load scan details.");
+    } finally {
+      setIsFetchingImage(false);
+    }
+  };
+
   return (
-    <PageLayout>
+    <PageLayout className="flex flex-col min-h-screen">
+      {isFetchingImage && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-8 flex flex-col items-center shadow-2xl">
+            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <h3 className="text-xl font-bold text-[#00004d]">Loading Details</h3>
+            <p className="text-slate-500 mt-2">Fetching scan from database...</p>
+          </div>
+        </div>
+      )}
       {/* Top Bar: Home + Logout */}
       <div className="absolute top-6 left-6 right-6 flex justify-between items-center z-20">
         <Button onClick={() => navigate('/homepage')} variant="default" className="rounded-full">
@@ -94,13 +136,17 @@ export function Homepage() {
             {/* History List Section */}
             <div className="w-full max-w-md">
               <h3 className="text-[#00004d] font-bold text-lg mb-3 flex items-center gap-2">
-                <FileClock className="w-5 h-5" /> Recent Scans
+                <FileClock className="w-5 h-5" /> Most Recent Scan
               </h3>
 
               {history.length > 0 ? (
                 <div className="bg-white/80 backdrop-blur-sm rounded-2xl w-full max-h-48 overflow-y-auto shadow-sm border border-white/50 p-2 space-y-2 custom-scrollbar">
                   {history.map((item) => (
-                    <div key={item.id} className="flex justify-between items-center p-3 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-blue-200 transition-colors">
+                    <div 
+                      key={item.id} 
+                      onClick={() => handleScanClick(item)}
+                      className="flex justify-between items-center p-3 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-blue-200 hover:shadow-md cursor-pointer transition-all"
+                    >
                       <div>
                         <p className="text-xs text-slate-400 font-medium mb-0.5">{item.date}</p>
                         <p className="text-sm font-bold text-[#00004d]">{item.plaques} Calculus Detected</p>
