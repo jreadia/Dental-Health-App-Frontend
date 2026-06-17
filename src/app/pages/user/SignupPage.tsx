@@ -31,7 +31,7 @@ export function SignupPage() {
     setLoading(true);
     try {
       const { registerUser } = await import("../../../api/auth");
-      const res: any = await registerUser({
+      const res = await registerUser({
         firstName,
         lastName,
         email: username,
