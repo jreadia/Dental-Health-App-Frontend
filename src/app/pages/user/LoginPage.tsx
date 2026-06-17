@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageLayout } from "../../components/ui/PageLayout";
 import { Button } from "../../components/ui/Button";
+import { ForgotPasswordModal } from "../../components/ui/ForgotPasswordModal";
 
 const inputClass =
   "w-full rounded-xl px-4 py-3 outline-none text-sm bg-white/10 text-white placeholder-white/50 border border-white/20 focus:border-white/60 focus:bg-white/15 transition-all";
@@ -12,6 +13,7 @@ export function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,6 +92,16 @@ export function LoginPage() {
               />
             </div>
 
+            <div className="flex justify-end -mt-1 mb-1">
+              <button
+                type="button"
+                onClick={() => setIsForgotModalOpen(true)}
+                className="text-white/70 hover:text-white text-xs font-medium hover:underline transition-colors"
+              >
+                Forgot Password?
+              </button>
+            </div>
+
             <Button type="submit" variant="gradient" className="w-full rounded-xl py-3 h-auto" disabled={loading}>
               {loading ? "Logging in..." : "Login"}
             </Button>
@@ -109,6 +121,11 @@ export function LoginPage() {
           </form>
         </div>
       </div>
+
+      <ForgotPasswordModal 
+        isOpen={isForgotModalOpen} 
+        onClose={() => setIsForgotModalOpen(false)} 
+      />
     </PageLayout>
   );
 }

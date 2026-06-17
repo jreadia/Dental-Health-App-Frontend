@@ -39,3 +39,10 @@ export async function logoutAdmin() {
     method: 'POST',
   });
 }
+
+export async function sendPasswordResetEmail(email: string) {
+  return fetchClient('/auth/users/forgot-password', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
