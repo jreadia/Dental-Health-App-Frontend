@@ -82,13 +82,13 @@ export function Homepage() {
           {/* Left Side - Text Content & History List */}
           <div className="flex-1 w-full">
             <h1 className="text-[#00004d] mb-2 text-[48px] font-bold leading-[1.2]">
-              Dental Diagnostics
+              Kuya Matt's Dental Diagnostics
             </h1>
             <h2 className="text-[#00004d] mb-4 text-[32px] font-semibold leading-[1.2]">
-              Presentation
+              Web-Based Classification
             </h2>
             <p className="text-[#00004d] mb-8 text-[14px] font-normal">
-              Watch the web page
+              Identify calculus of the teeth with AI analysis
             </p>
 
             {/* History List Section */}
