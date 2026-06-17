@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getUsers, updateUserStatus, removeUser, User } from '../../../../api/users';
 import { StatusBadge } from '../../../components/ui/StatusBadge';
 import { Modal } from '../../../components/ui/Modal';
 
 interface UserManagementTableProps {
   onStatsChange: () => void;
+  totalUsers?: number;
 }
 
-export function UserManagementTable({ onStatsChange }: UserManagementTableProps) {
+export function UserManagementTable({ onStatsChange, totalUsers }: UserManagementTableProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,6 +20,8 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
   const [hasMore, setHasMore] = useState(false);
   const [userToRemove, setUserToRemove] = useState<string | null>(null);
   const [isRemoving, setIsRemoving] = useState(false);
+  
+  const navigate = useNavigate();
 
   const fetchUsers = async (pageIndex: number, search: string) => {
     setLoading(true);
@@ -43,7 +47,6 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchUsers(0, searchQuery);
   }, [searchQuery]);
 
@@ -118,6 +121,10 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
     return '-';
   };
 
+  const handleViewScans = (userId: string) => {
+    navigate(`/admin/users/${userId}/scans`);
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
       {/* Search Bar */}
@@ -149,10 +156,10 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
             <tr className="bg-gray-50 text-[#0a2378] text-xs font-bold uppercase tracking-wider">
               <th className="p-4 py-3 w-[5%]">ID</th>
               <th className="p-4 py-3 w-[20%]">Name</th>
-              <th className="p-4 py-3 w-[25%]">Email</th>
+              <th className="p-4 py-3 w-[20%]">Email</th>
               <th className="p-4 py-3 w-[15%]">Status</th>
               <th className="p-4 py-3 w-[15%]">Joined</th>
-              <th className="p-4 py-3 w-[10%]">Action</th>
+              <th className="p-4 py-3 w-[15%]">Action</th>
               <th className="p-4 py-3 w-[10%]">Remove</th>
             </tr>
           </thead>
@@ -167,20 +174,19 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
               </tr>
             ) : (
               users.map((user, index) => {
-                // Determine row number for display purposes
                 const displayId = (currentPage * 5) + index + 1;
                 const status = user.status || 'ACTIVE';
                 
                 return (
-                  <tr key={user.userId} className="hover:bg-gray-50/50 transition-colors text-sm">
+                  <tr key={user.userId} className="hover:bg-gray-50/50 transition-colors text-sm cursor-pointer" onClick={() => handleViewScans(user.userId)}>
                     <td className="p-4 text-gray-500">{displayId}</td>
                     <td className="p-4 text-gray-800 font-medium">{`${user.firstName || ''} ${user.lastName || ''}`.trim() || 'No Name'}</td>
                     <td className="p-4 text-gray-500">{user.email}</td>
-                    <td className="p-4">
+                    <td className="p-4" onClick={(e) => e.stopPropagation()}>
                       <StatusBadge status={status}>{status}</StatusBadge>
                     </td>
                     <td className="p-4 text-gray-500">{formatDate(user.createdAt)}</td>
-                    <td className="p-4">
+                    <td className="p-4" onClick={(e) => e.stopPropagation()}>
                       <button 
                         onClick={() => handleToggleStatus(user)}
                         className={`px-3 py-1.5 rounded text-xs font-medium border transition-colors ${
@@ -192,7 +198,7 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
                         {status === 'ACTIVE' ? 'Deactivate' : 'Activate'}
                       </button>
                     </td>
-                    <td className="p-4">
+                    <td className="p-4" onClick={(e) => e.stopPropagation()}>
                       <button 
                         onClick={() => handleRemoveClick(user.userId)}
                         className="px-3 py-1.5 rounded text-xs font-medium border bg-red-50 text-red-600 border-red-200 hover:bg-red-100 transition-colors"

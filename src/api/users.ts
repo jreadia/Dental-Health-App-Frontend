@@ -45,3 +45,8 @@ export async function updateUserStatus(userId: string, status: 'ACTIVE' | 'INACT
 export async function removeUser(userId: string) {
   return fetchClient(`/users/${userId}`, { method: 'DELETE' });
 }
+
+export async function getUserDentalImagesAdmin(userId: string, limit?: number) {
+  const query = limit ? `?limit=${limit}` : '';
+  return fetchClient(`/users/${userId}/dental-images${query}`, { method: 'GET' }) as Promise<any[]>;
+}

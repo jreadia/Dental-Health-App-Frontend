@@ -47,7 +47,7 @@ export function DataDashboard({ onBack, loggedInAs }: DataDashboardProps) {
       <div className="py-6 px-8 max-w-7xl mx-auto">
         <UserSummaryCards stats={stats} loading={loadingStats} />
         
-        <UserManagementTable onStatsChange={fetchStats} />
+        <UserManagementTable onStatsChange={fetchStats} totalUsers={stats?.total ?? 0} />
 
         {/* Existing Admin accounts list */}
         <AdminAccountsList />

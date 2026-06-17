@@ -8,6 +8,7 @@ import { LoadingPage } from "./pages/user/LoadingPage";
 import { Homepage } from "./pages/user/Homepage";
 import AdminPage from "./pages/admin/AdminPage";
 import { AdminLoginScreen } from "./pages/admin/AdminLoginScreen";
+import { AdminUserScans } from "./pages/admin/AdminUserScans";
 
 
 
@@ -59,6 +60,12 @@ export default function App() {
         <Route path="/admin" element={
           <ProtectedRoute adminOnly>
             <AdminPage />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/users/:userId/scans" element={
+          <ProtectedRoute adminOnly>
+            <AdminUserScans />
           </ProtectedRoute>
         } />
       </Routes>
