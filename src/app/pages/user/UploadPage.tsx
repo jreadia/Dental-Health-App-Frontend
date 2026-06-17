@@ -77,7 +77,7 @@ export default function UploadPage() {
                   const newResult = {
                     id: result.imageId || result.id || result._id || Date.now().toString(),
                     date: result.uploadDate ? new Date(result.uploadDate).toLocaleDateString() : new Date().toLocaleDateString(),
-                    plaques: result.mlResults?.calculusAmount || 0,
+                    calculusCount: result.mlResults?.calculusAmount || 0,
                     status: result.mlResults?.overall_diagnosis || "Healthy",
                   };
 
