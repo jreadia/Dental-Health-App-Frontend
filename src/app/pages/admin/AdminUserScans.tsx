@@ -25,7 +25,7 @@ export function AdminUserScans() {
     <div className="min-h-screen bg-[#f8faff] font-sans">
       <header className="bg-[#0a2378] text-white flex items-center gap-4 py-5 px-8">
         <button 
-          onClick={() => navigate(-1)} 
+          onClick={() => navigate('/admin', { state: { returnToData: true } })} 
           className="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white cursor-pointer font-sans text-[13px] hover:bg-white/20 transition-colors"
         >
           ← Back
@@ -44,10 +44,26 @@ export function AdminUserScans() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {images.map(img => {
-                const date = new Date(img.uploadDate).toLocaleDateString();
-                const plaqueCount = img.mlResults?.detections?.length || 0;
-                const status = img.diagnosis?.oralHealthStatus || (plaqueCount > 0 ? 'NEEDS ATTENTION' : 'HEALTHY');
-                const isHealthy = status === 'HEALTHY';
+                // Parse date correctly
+                const dateObj = img.uploadDate && (img.uploadDate as any)._seconds 
+                  ? new Date((img.uploadDate as any)._seconds * 1000) 
+                  : new Date(img.uploadDate as string);
+                const date = isNaN(dateObj.getTime()) ? 'Unknown Date' : dateObj.toLocaleDateString();
+
+                // Correct ML parsing based on backend structure
+                const mlData = img.mlResults as any;
+                const plaqueCount = mlData?.boxes?.length || 0;
+                const status = mlData?.overall_diagnosis || (img.diagnosis as any)?.oralHealthStatus || (plaqueCount > 0 ? 'NEEDS ATTENTION' : 'HEALTHY');
+                // Determine status color
+                let statusColorClass = 'bg-gray-100 text-gray-700';
+                const lowerStatus = status.toLowerCase();
+                if (lowerStatus.includes('unhealthy') || lowerStatus.includes('needs attention')) {
+                  statusColorClass = 'bg-red-100 text-red-700';
+                } else if (lowerStatus.includes('mild')) {
+                  statusColorClass = 'bg-yellow-100 text-yellow-800';
+                } else if (lowerStatus.includes('healthy')) {
+                  statusColorClass = 'bg-green-100 text-green-700';
+                }
                 
                 return (
                   <div key={img.imageId} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
@@ -62,7 +78,7 @@ export function AdminUserScans() {
                       <div className="text-sm text-gray-500 mb-1">Uploaded: {date}</div>
                       <div className="font-bold text-lg text-[#0a2378] mb-3">{plaqueCount} Plaque(s) Detected</div>
                       <div className="mt-auto">
-                        <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${isHealthy ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${statusColorClass}`}>
                           Status: {status}
                         </span>
                       </div>

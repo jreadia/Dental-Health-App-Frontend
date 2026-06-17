@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AdminHomepage } from "./components/AdminHomepage";
 import { DataDashboard } from "./components/DataDashboard";
 import { AddAdminModal } from "./components/AddAdminModal";
@@ -11,8 +11,13 @@ type View = "home" | "data";
 
 export default function AdminPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const loggedInAs = localStorage.getItem("loggedInAs") || "Admin";
-  const [view, setView] = useState<View>("home");
+  
+  // Restore view from navigation state if available
+  const [view, setView] = useState<View>(
+    (location.state as any)?.returnToData ? "data" : "home"
+  );
   const [showAdd, setShowAdd] = useState(false);
 
   const handleLogout = async () => {

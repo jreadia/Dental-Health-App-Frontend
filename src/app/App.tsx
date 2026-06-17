@@ -7,8 +7,8 @@ import { SuccessPage } from "./pages/user/SuccessPage";
 import { LoadingPage } from "./pages/user/LoadingPage";
 import { Homepage } from "./pages/user/Homepage";
 import AdminPage from "./pages/admin/AdminPage";
-import { AdminLoginScreen } from "./pages/admin/AdminLoginScreen";
 import { AdminUserScans } from "./pages/admin/AdminUserScans";
+import { AdminLoginScreen } from "./pages/admin/AdminLoginScreen";
 
 
 
