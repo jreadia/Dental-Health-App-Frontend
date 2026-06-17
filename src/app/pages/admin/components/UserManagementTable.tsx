@@ -154,8 +154,7 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-50 text-[#0a2378] text-xs font-bold uppercase tracking-wider">
-              <th className="p-4 py-3 w-[5%]">ID</th>
-              <th className="p-4 py-3 w-[20%]">Name</th>
+              <th className="p-4 py-3 w-[25%]">Name</th>
               <th className="p-4 py-3 w-[20%]">Email</th>
               <th className="p-4 py-3 w-[15%]">Status</th>
               <th className="p-4 py-3 w-[15%]">Joined</th>
@@ -166,20 +165,18 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
           <tbody className="divide-y divide-gray-100">
             {loading ? (
               <tr>
-                <td colSpan={7} className="p-8 text-center text-gray-400">Loading users...</td>
+                <td colSpan={6} className="p-8 text-center text-gray-400">Loading users...</td>
               </tr>
             ) : users.length === 0 ? (
               <tr>
-                <td colSpan={7} className="p-8 text-center text-gray-400">No users found.</td>
+                <td colSpan={6} className="p-8 text-center text-gray-400">No users found.</td>
               </tr>
             ) : (
-              users.map((user, index) => {
-                const displayId = (currentPage * 5) + index + 1;
+              users.map((user) => {
                 const status = user.status || 'ACTIVE';
                 
                 return (
                   <tr key={user.userId} className="hover:bg-gray-50/50 transition-colors text-sm cursor-pointer" onClick={() => handleViewScans(user.userId)}>
-                    <td className="p-4 text-gray-500">{displayId}</td>
                     <td className="p-4 text-gray-800 font-medium">{`${user.firstName || ''} ${user.lastName || ''}`.trim() || 'No Name'}</td>
                     <td className="p-4 text-gray-500">{user.email}</td>
                     <td className="p-4" onClick={(e) => e.stopPropagation()}>
