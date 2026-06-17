@@ -16,17 +16,17 @@ export default function ResultPage() {
     return <Navigate to="/homepage" replace />;
   }
 
-  const plaques = resultData?.plaques ?? 0;
-  const calculusDetected = plaques > 0;
+  const calculusCount = resultData?.calculusCount ?? 0;
+  const calculusDetected = calculusCount > 0;
 
-  // Oral health status based on plaque count
+  // Oral health status based on calculus count
   // healthy = 0, mild = 1-5, unhealthy = 6+
   const getOralHealthStatus = (count: number) => {
     if (count === 0) return "Healthy";
     if (count >= 1 && count <= 5) return "Mild";
     return "Unhealthy";
   };
-  const oralHealthStatus = getOralHealthStatus(plaques);
+  const oralHealthStatus = getOralHealthStatus(calculusCount);
 
   // Helper function to color code the result banner
   const getStatusStyle = (status: string) => {
@@ -61,7 +61,7 @@ export default function ResultPage() {
           {/* Amount */}
           <div className="flex items-center justify-between">
             <span className="text-sm font-semibold text-[#00004d]/70">Amount</span>
-            <span className="text-lg font-extrabold text-[#00004d]">{plaques} Calculus</span>
+            <span className="text-lg font-extrabold text-[#00004d]">{calculusCount} Calculus</span>
           </div>
 
           {/* Oral Health Status */}
@@ -92,7 +92,7 @@ export default function ResultPage() {
             {/* Dynamic Status Banner */}
             <div className={`w-full border p-4 rounded-2xl mb-6 ${getStatusStyle(oralHealthStatus)}`}>
               <h3 className="text-xl font-black uppercase tracking-wide mb-1">{oralHealthStatus}</h3>
-              <p className="text-sm font-semibold opacity-90">{plaques} Calculus Detected</p>
+              <p className="text-sm font-semibold opacity-90">{calculusCount} Calculus Detected</p>
             </div>
 
             {uploadedImage ? (

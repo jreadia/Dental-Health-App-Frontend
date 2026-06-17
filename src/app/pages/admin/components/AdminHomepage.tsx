@@ -42,12 +42,15 @@ export function AdminHomepage({
 
       {/* Hero Section */}
       <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-end relative z-10">
-        <div className="pb-6">
+        <div className="pb-6 max-w-xl">
           <h1 className="text-[54px] font-black text-[#0a1e6e] leading-[1.1] mb-3">
-            Web Title
+            SmileScan
           </h1>
-          <p className="text-[32px] font-bold text-[#1a3a9e] leading-[1.3] mb-7">
-            Description<br />of the app
+          <h2 className="text-[32px] font-bold text-[#1a3a9e] leading-[1.3] mb-4">
+            Dental Calculus Severity Checker
+          </h2>
+          <p className="text-[16px] text-[#1a3a9e]/80 leading-relaxed mb-7 max-w-lg font-medium">
+            Upload a dental image to detect potential dental calculus using AI-powered image processing. The technology analyzes the image and produces an estimated oral health assessment that will help users keep track of their dental health.
           </p>
           <div className="flex gap-3.5 flex-wrap">
             <Button onClick={onAddAdmin} variant="outline" className="rounded-full px-[22px] py-[11px] h-auto border-2 border-[#0a2378] text-[#0a2378]">

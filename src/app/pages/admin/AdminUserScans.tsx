@@ -53,8 +53,8 @@ export function AdminUserScans() {
 
                 // Correct ML parsing based on backend structure
                 const mlData = img.mlResults;
-                const plaqueCount = mlData?.boxes?.length || 0;
-                const status = mlData?.overall_diagnosis || img.diagnosis?.oralHealthStatus || (plaqueCount > 0 ? 'NEEDS ATTENTION' : 'HEALTHY');
+                const calculusCount = mlData?.boxes?.length || 0;
+                const status = mlData?.overall_diagnosis || img.diagnosis?.oralHealthStatus || (calculusCount > 0 ? 'NEEDS ATTENTION' : 'HEALTHY');
                 // Determine status color
                 let statusColorClass = 'bg-gray-100 text-gray-700';
                 const lowerStatus = status.toLowerCase();
@@ -77,7 +77,7 @@ export function AdminUserScans() {
                     </div>
                     <div className="p-4 flex flex-col flex-1">
                       <div className="text-sm text-gray-500 mb-1">Uploaded: {date}</div>
-                      <div className="font-bold text-lg text-[#0a2378] mb-3">{plaqueCount} Plaque(s) Detected</div>
+                      <div className="font-bold text-lg text-[#0a2378] mb-3">{calculusCount} Calculus Detected</div>
                       <div className="mt-auto">
                         <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${statusColorClass}`}>
                           Status: {status}

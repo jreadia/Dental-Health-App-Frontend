@@ -10,7 +10,7 @@ import { logoutUser } from "../../../api/auth";
 interface HistoryItem {
   id: string;
   date: string;
-  plaques: number;
+  calculusCount: number;
   status: string;
 }
 
@@ -46,7 +46,7 @@ export function Homepage() {
             return {
               id: item.imageId || item.id || item._id || Date.now().toString(),
               date: parsedDate,
-              plaques: item.mlResults?.calculusAmount || 0,
+              calculusCount: item.mlResults?.calculusAmount || 0,
               status: item.mlResults?.overall_diagnosis || "Healthy"
             };
           });
@@ -84,7 +84,7 @@ export function Homepage() {
       const newResult = {
         id: imageDetails.imageId || imageDetails.id || item.id,
         date: imageDetails.uploadDate ? new Date(imageDetails.uploadDate).toLocaleDateString() : item.date,
-        plaques: imageDetails.mlResults?.calculusAmount || item.plaques,
+        calculusCount: imageDetails.mlResults?.calculusAmount || item.calculusCount,
         status: imageDetails.mlResults?.overall_diagnosis || item.status,
       };
 
@@ -124,14 +124,14 @@ export function Homepage() {
           
           {/* Left Side - Text Content & History List */}
           <div className="flex-1 w-full">
-            <h1 className="text-[#00004d] mb-2 text-[48px] font-bold leading-[1.2]">
-              Kuya Matt's Dental Diagnostics
+            <h1 className="text-[#00004d] text-[48px] font-bold leading-[1.2] mb-2">
+              SmileScan
             </h1>
             <h2 className="text-[#00004d] mb-4 text-[32px] font-semibold leading-[1.2]">
-              Web-Based Classification
+              Dental Calculus Severity Checker
             </h2>
-            <p className="text-[#00004d] mb-8 text-[14px] font-normal">
-              Identify calculus of the teeth with AI analysis
+            <p className="text-[#00004d] mb-8 text-[14px] font-normal max-w-lg">
+              Upload a dental image to detect potential dental calculus using AI-powered image processing. The technology analyzes the image and produces an estimated oral health assessment that will help users keep track of their dental health.
             </p>
 
             {/* History List Section */}
@@ -150,7 +150,7 @@ export function Homepage() {
                     >
                       <div>
                         <p className="text-xs text-slate-400 font-medium mb-0.5">{item.date}</p>
-                        <p className="text-sm font-bold text-[#00004d]">{item.plaques} Calculus Detected</p>
+                        <p className="text-sm font-bold text-[#00004d]">{item.calculusCount} Calculus Detected</p>
                       </div>
                       <StatusBadge status={item.status} />
                     </div>
