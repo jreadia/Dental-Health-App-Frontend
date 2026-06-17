@@ -46,7 +46,21 @@ export async function removeUser(userId: string) {
   return fetchClient(`/users/${userId}`, { method: 'DELETE' });
 }
 
+export interface DentalImage {
+  imageId: string;
+  uploadDate: string | number | Date;
+  imageUrl?: string;
+  annotatedImageUrl?: string;
+  mlResults?: {
+    detections?: unknown[];
+  };
+  diagnosis?: {
+    oralHealthStatus?: string;
+  };
+  [key: string]: unknown;
+}
+
 export async function getUserDentalImagesAdmin(userId: string, limit?: number) {
   const query = limit ? `?limit=${limit}` : '';
-  return fetchClient(`/users/${userId}/dental-images${query}`, { method: 'GET' }) as Promise<any[]>;
+  return fetchClient(`/users/${userId}/dental-images${query}`, { method: 'GET' }) as Promise<DentalImage[]>;
 }

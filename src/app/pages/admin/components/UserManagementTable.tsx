@@ -7,10 +7,9 @@ import { Modal } from '../../../components/ui/Modal';
 
 interface UserManagementTableProps {
   onStatsChange: () => void;
-  totalUsers?: number;
 }
 
-export function UserManagementTable({ onStatsChange, totalUsers }: UserManagementTableProps) {
+export function UserManagementTable({ onStatsChange }: UserManagementTableProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -47,6 +46,7 @@ export function UserManagementTable({ onStatsChange, totalUsers }: UserManagemen
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchUsers(0, searchQuery);
   }, [searchQuery]);
 

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getUserDentalImagesAdmin } from '../../../api/users';
+import { getUserDentalImagesAdmin, DentalImage } from '../../../api/users';
 
 export function AdminUserScans() {
   const { userId } = useParams<{ userId: string }>();
   const navigate = useNavigate();
-  const [images, setImages] = useState<any[]>([]);
+  const [images, setImages] = useState<DentalImage[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (userId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(true);
       // Fetch only the last 3 recent scans. We also slice it here in case 
       // the backend hasn't been updated in production yet to respect the limit.
