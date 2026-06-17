@@ -1,7 +1,5 @@
 import React from "react";
-import { ToothMascot } from "../../../components/pictures/ToothMascot";
 import { Plus, Database, User } from "lucide-react";
-import { Button } from "../../../components/ui/Button";
 
 interface AdminHomepageProps {
   onAccessData: () => void;
@@ -41,10 +39,12 @@ export function AdminHomepage({
       </nav>
 
       {/* Hero Section */}
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-end relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_320px] gap-12 items-center relative z-10">
+
+        {/* Left Panel */}
         <div className="pb-6 max-w-xl">
           <h1 className="text-[54px] font-black text-[#0a1e6e] leading-[1.1] mb-3">
-            SmileScan
+            Admin Dashboard
           </h1>
           <h2 className="text-[32px] font-bold text-[#1a3a9e] leading-[1.3] mb-4">
             Dental Calculus Severity Checker
@@ -52,21 +52,68 @@ export function AdminHomepage({
           <p className="text-[16px] text-[#1a3a9e]/80 leading-relaxed mb-7 max-w-lg font-medium">
             Upload a dental image to detect potential dental calculus using AI-powered image processing. The technology analyzes the image and produces an estimated oral health assessment that will help users keep track of their dental health.
           </p>
-          <div className="flex gap-3.5 flex-wrap">
-            <Button onClick={onAddAdmin} variant="outline" className="rounded-full px-[22px] py-[11px] h-auto border-2 border-[#0a2378] text-[#0a2378]">
-              <Plus className="w-4 h-4 mr-2" /> Add admin account
-            </Button>
-            <Button onClick={onAccessData} variant="default" className="rounded-full px-[22px] py-[11px] h-auto bg-[#0a2378]">
-              <Database className="w-4 h-4 mr-2" /> Access Data
-            </Button>
-          </div>
         </div>
 
-        <div className="w-[260px] bg-[#b8dcf5] rounded-xl flex items-center justify-center p-4 min-h-[240px] shrink-0">
-          <ToothMascot />
+        {/* Right Panel */}
+        <div className="flex flex-col gap-4 w-[280px]">
+    
+          <button
+            onClick={onAccessData}
+            className="
+              bg-white/80
+              backdrop-blur-md
+              border border-white/50
+              rounded-2xl
+              p-5
+              shadow-lg
+              hover:shadow-xl
+              hover:-translate-y-1
+              transition-all
+              flex items-center gap-4
+              text-left
+            "
+          >
+            <div className="w-12 h-12 rounded-xl bg-[#0a2378]/10 flex items-center justify-center">
+              <Database className="w-6 h-6 text-[#0a2378]" />
+            </div>
+
+            <div>
+              <h3 className="font-bold text-[#0a2378] text-lg">
+                Access Data
+              </h3>
+            </div>
+          </button>
+
+          <button
+            onClick={onAddAdmin}
+            className="
+              bg-white/80
+              backdrop-blur-md
+              border border-white/50
+              rounded-2xl
+              p-5
+              shadow-lg
+              hover:shadow-xl
+              hover:-translate-y-1
+              transition-all
+              flex items-center gap-4
+              text-left
+            "
+          >
+            <div className="w-12 h-12 rounded-xl bg-[#0a2378]/10 flex items-center justify-center">
+              <Plus className="w-6 h-6 text-[#0a2378]" />
+            </div>
+
+            <div>
+              <h3 className="font-bold text-[#0a2378] text-lg">
+                Add Admin
+              </h3>
+            </div>
+          </button>
+
         </div>
       </div>
-
+      
       {/* Bottom Panel */}
       <div className="bg-[#0a2378] rounded-t-xl py-5 px-7 mt-2 flex items-center gap-4 text-white relative z-10 shrink-0">
         <div className="w-11 h-11 rounded-full bg-white/15 flex items-center justify-center shrink-0">
