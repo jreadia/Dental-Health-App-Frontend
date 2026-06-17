@@ -22,20 +22,48 @@ export interface GetUsersResponse {
   hasMore: boolean;
 }
 
+let cachedStats: UserStats | null = null;
+let statsFetchTime = 0;
+let cachedInitialUsers: GetUsersResponse | null = null;
+let usersFetchTime = 0;
+
+export function invalidateUsersCache() {
+  cachedStats = null;
+  cachedInitialUsers = null;
+}
+
 export async function getUsers(params: { search?: string; limit?: number; cursor?: string | null }) {
+  const isInitialFetch = !params.search && params.limit === 5 && !params.cursor;
+  if (isInitialFetch && cachedInitialUsers && Date.now() - usersFetchTime < 60000) {
+    return cachedInitialUsers;
+  }
+
   const q = new URLSearchParams();
   if (params.search) q.append('search', params.search);
   if (params.limit) q.append('limit', params.limit.toString());
   if (params.cursor) q.append('cursor', params.cursor);
   
-  return fetchClient(`/users?${q.toString()}`, { method: 'GET' }) as Promise<GetUsersResponse>;
+  const response = await fetchClient(`/users?${q.toString()}`, { method: 'GET' }) as GetUsersResponse;
+  
+  if (isInitialFetch) {
+    cachedInitialUsers = response;
+    usersFetchTime = Date.now();
+  }
+  return response;
 }
 
 export async function getUserStats() {
-  return fetchClient('/users/stats', { method: 'GET' }) as Promise<UserStats>;
+  if (cachedStats && Date.now() - statsFetchTime < 60000) {
+    return cachedStats;
+  }
+  const response = await fetchClient('/users/stats', { method: 'GET' }) as UserStats;
+  cachedStats = response;
+  statsFetchTime = Date.now();
+  return response;
 }
 
 export async function updateUserStatus(userId: string, status: 'ACTIVE' | 'INACTIVE' | 'BANNED') {
+  invalidateUsersCache();
   return fetchClient(`/users/${userId}/status`, {
     method: 'PATCH',
     body: JSON.stringify({ status })
@@ -43,6 +71,7 @@ export async function updateUserStatus(userId: string, status: 'ACTIVE' | 'INACT
 }
 
 export async function removeUser(userId: string) {
+  invalidateUsersCache();
   return fetchClient(`/users/${userId}`, { method: 'DELETE' });
 }
 
