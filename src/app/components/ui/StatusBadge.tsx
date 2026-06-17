@@ -37,7 +37,7 @@ export function StatusBadge({ className, variant, status, children, ...props }: 
     const s = status.toLowerCase();
     if (s === "healthy") activeVariant = "healthy";
     else if (s === "mild") activeVariant = "mild";
-    else if (s === "unhealthy") activeVariant = "unhealthy";
+    else if (s === "unhealthy" || s === "needs attention") activeVariant = "unhealthy";
     else if (s === "active") activeVariant = "active";
     else if (s === "inactive") activeVariant = "inactive";
     else if (s === "banned") activeVariant = "banned";

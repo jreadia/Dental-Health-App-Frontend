@@ -122,7 +122,7 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
   };
 
   const handleViewScans = (userId: string) => {
-    navigate(`/admin/users/${userId}/scans`);
+    navigate(`/admin/users/${userId}/scans`, { state: { returnToData: true } });
   };
 
   return (

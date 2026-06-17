@@ -48,11 +48,12 @@ export async function removeUser(userId: string) {
 
 export interface DentalImage {
   imageId: string;
-  uploadDate: string | number | Date;
+  uploadDate?: string | { _seconds: number, _nanoseconds: number };
   imageUrl?: string;
   annotatedImageUrl?: string;
   mlResults?: {
-    detections?: unknown[];
+    boxes?: unknown[];
+    overall_diagnosis?: string;
   };
   diagnosis?: {
     oralHealthStatus?: string;
