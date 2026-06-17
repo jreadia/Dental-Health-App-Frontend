@@ -19,14 +19,15 @@ export function Homepage() {
   const [isFetchingImage, setIsFetchingImage] = useState(false);
   const [history, setHistory] = useState<HistoryItem[]>(() => {
     const cachedHistory = sessionStorage.getItem('dentalHistory');
-    return cachedHistory ? JSON.parse(cachedHistory) : [];
+    const parsed = cachedHistory ? JSON.parse(cachedHistory) : [];
+    return parsed.slice(0, 1);
   });
 
   useEffect(() => {
     // Prevent redundant Firebase reads to save free tier quotas
     if (history.length > 0) return;
 
-    getUserImageHistory()
+    getUserImageHistory(1)
       .then((data: unknown) => {
         if (Array.isArray(data)) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -49,7 +50,7 @@ export function Homepage() {
               status: item.mlResults?.overall_diagnosis || "Healthy"
             };
           });
-          const sorted = fetchedHistory.reverse();
+          const sorted = fetchedHistory.reverse().slice(0, 1);
           setHistory(sorted);
           sessionStorage.setItem('dentalHistory', JSON.stringify(sorted));
         }
