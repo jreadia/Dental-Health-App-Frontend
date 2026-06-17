@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { loginAdmin } from "../../../api/auth";
 import { useNavigate } from "react-router-dom";
+import { ForgotPasswordModal } from "../../components/ui/ForgotPasswordModal";
 
 export function AdminLoginScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError]       = useState("");
   const [loading, setLoading]   = useState(false);
+  const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
@@ -73,6 +75,23 @@ export function AdminLoginScreen() {
               placeholder="Enter admin password"
               required
             />
+            <button
+              type="button"
+              onClick={() => setIsForgotModalOpen(true)}
+              style={{
+                alignSelf: "flex-end",
+                background: "transparent",
+                border: "none",
+                color: "#60a5fa",
+                fontSize: "12px",
+                cursor: "pointer",
+                padding: 0,
+                marginTop: "4px",
+                fontFamily: "'Courier New', monospace",
+              }}
+            >
+              FORGOT PASSWORD?
+            </button>
           </div>
 
           {error && (
@@ -86,6 +105,11 @@ export function AdminLoginScreen() {
           </button>
         </form>
       </div>
+
+      <ForgotPasswordModal 
+        isOpen={isForgotModalOpen} 
+        onClose={() => setIsForgotModalOpen(false)} 
+      />
     </div>
   );
 }
