@@ -12,8 +12,15 @@ export async function uploadDentalImage(file: File) {
   });
 }
 
-export async function getUserImageHistory() {
-  return fetchClient('/dental-images', {
+export async function getUserImageHistory(limit?: number) {
+  const url = limit ? `/dental-images?limit=${limit}` : '/dental-images';
+  return fetchClient(url, {
+    method: 'GET',
+  });
+}
+
+export async function getDentalImageById(imageId: string) {
+  return fetchClient(`/dental-images/${imageId}`, {
     method: 'GET',
   });
 }
