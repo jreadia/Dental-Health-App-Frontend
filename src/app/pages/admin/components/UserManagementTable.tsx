@@ -172,7 +172,7 @@ export function UserManagementTable({ onStatsChange }: UserManagementTableProps)
                 <td colSpan={6} className="p-8 text-center text-gray-400">No users found.</td>
               </tr>
             ) : (
-              users.map((user, index) => {
+              users.map((user) => {
                 const status = user.status || 'ACTIVE';
                 
                 return (
