@@ -45,15 +45,16 @@ export function AdminUserScans() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {images.map(img => {
                 // Parse date correctly
-                const dateObj = img.uploadDate && (img.uploadDate as any)._seconds 
-                  ? new Date((img.uploadDate as any)._seconds * 1000) 
-                  : new Date(img.uploadDate as string);
+                const uploadDate = img.uploadDate;
+                const dateObj = (uploadDate && typeof uploadDate === 'object' && '_seconds' in uploadDate)
+                  ? new Date((uploadDate as { _seconds: number })._seconds * 1000) 
+                  : new Date(uploadDate as string);
                 const date = isNaN(dateObj.getTime()) ? 'Unknown Date' : dateObj.toLocaleDateString();
 
                 // Correct ML parsing based on backend structure
-                const mlData = img.mlResults as any;
+                const mlData = img.mlResults;
                 const plaqueCount = mlData?.boxes?.length || 0;
-                const status = mlData?.overall_diagnosis || (img.diagnosis as any)?.oralHealthStatus || (plaqueCount > 0 ? 'NEEDS ATTENTION' : 'HEALTHY');
+                const status = mlData?.overall_diagnosis || img.diagnosis?.oralHealthStatus || (plaqueCount > 0 ? 'NEEDS ATTENTION' : 'HEALTHY');
                 // Determine status color
                 let statusColorClass = 'bg-gray-100 text-gray-700';
                 const lowerStatus = status.toLowerCase();

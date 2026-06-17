@@ -15,8 +15,9 @@ export default function AdminPage() {
   const loggedInAs = localStorage.getItem("loggedInAs") || "Admin";
   
   // Restore view from navigation state if available
+  const state = location.state as { returnToData?: boolean } | null;
   const [view, setView] = useState<View>(
-    (location.state as any)?.returnToData ? "data" : "home"
+    state?.returnToData ? "data" : "home"
   );
   const [showAdd, setShowAdd] = useState(false);
 
