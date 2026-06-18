@@ -76,6 +76,8 @@ npx playwright install
 npm run test:e2e
 ```
 
+> **Note on CI/CD:** Our GitHub Actions workflow (`ci.yml`) runs Playwright tests using the official Playwright Docker container for faster execution. If you ever update the `@playwright/test` version in `package.json`, you **must** also update the Docker image tag in `.github/workflows/ci.yml` to match!
+
 4. **Build for production**
 
 ```bash
