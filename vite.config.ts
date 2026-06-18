@@ -1,4 +1,5 @@
-import { defineConfig } from 'vite'
+/// <reference types="vitest" />
+import { defineConfig } from 'vitest/config'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
@@ -22,6 +23,8 @@ export default defineConfig({
       '/api/v1': {
         target: 'https://dental-health-backend-x7b5.onrender.com',
         changeOrigin: true,
+        timeout: 120000,
+        proxyTimeout: 120000,
       }
     }
   },
@@ -41,4 +44,10 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/test-setup.ts',
+    exclude: ['e2e/**', 'node_modules/**'],
+  },
 })
