@@ -2,18 +2,8 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Upload Flow (Hybrid: Real Auth, Mocked ML)', () => {
   test('user logs in and views upload page', async ({ page }) => {
-    // 1. Perform a REAL login
-    // IMPORTANT: Ensure 'e2e-tester@example.com' with 'password123' exists in Prod!
-    await page.goto('/');
-    await page.getByPlaceholder('Email').fill('e2e-tester@example.com');
-    await page.getByPlaceholder('Password').fill('password123');
-    await page.getByRole('button', { name: 'Login' }).click();
-    
-    // Wait for the login to succeed and navigate to homepage
-    // Increased timeout to 30s because Render free tier might be waking up
-    await expect(page).toHaveURL(/.*homepage/, { timeout: 30000 });
-
-    // 2. Navigate to upload page
+    // We are already authenticated via the global setup
+    // 1. Navigate to upload page directly
     await page.goto('/upload');
     await expect(page.locator('h2')).toContainText('UPLOAD IMAGE');
     await expect(page.getByText(/Disclaimer/i).first()).toBeVisible();
@@ -34,5 +24,6 @@ test.describe('Upload Flow (Hybrid: Real Auth, Mocked ML)', () => {
     
     // In a real test we would upload a file and verify the results,
     // but the dropzone requires specific DOM structure to interact with.
+    // we also do not want to overload the deployed model server
   });
 });

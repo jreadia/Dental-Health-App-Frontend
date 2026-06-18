@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Authentication Flow (Real API)', () => {
+  // Clear any authenticated state since these tests explicitly test the login/signup flow
+  test.use({ storageState: { cookies: [], origins: [] } });
+
   test('user can log in with valid credentials', async ({ page }) => {
     // IMPORTANT: For this test to pass, you must manually register an account
     // with email 'e2e-tester@example.com' and password 'password123' in your production app!

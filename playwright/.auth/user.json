@@ -1,0 +1,25 @@
+{
+  "cookies": [
+    {
+      "name": "token",
+      "value": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlOTA0NmVhZDJlMDUwMDAxMGVkNTA0M2I0ODNkODRiMGM1MmM3YzQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZGVudGFsLWltYWdlLWNsYXNzaWZpY2F0LWUxNGUzIiwiYXVkIjoiZGVudGFsLWltYWdlLWNsYXNzaWZpY2F0LWUxNGUzIiwiYXV0aF90aW1lIjoxNzgxNzg4Nzg5LCJ1c2VyX2lkIjoiWEhpQWYxRVhvdVk3TURZSzZBblVrWWFaUWJDMiIsInN1YiI6IlhIaUFmMUVYb3VZN01EWUs2QW5Va1lhWlFiQzIiLCJpYXQiOjE3ODE3ODg3ODksImV4cCI6MTc4MTc5MjM4OSwiZW1haWwiOiJlMmUtdGVzdGVyQGV4YW1wbGUuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImUyZS10ZXN0ZXJAZXhhbXBsZS5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.PfQxioLGn4A4h-_IsGjjzxsWuBrPaFXq9lw07U_1J5Q2_RgMY9WEh7Myu5rmm_vRNhILlAlTpZF0cwpBIS5DxfhKMlRGkUMR3BWvKiGXsEBigTpEfP3J-V5ceI9DTOeFFlLLNIc7KYylYMcqasDPhe3IVuzUhyLLbyxqHGhCfaTDKD16G2nFAb1fmZbmLQra-Su1UdpaQPCsufhhpmFClD1d4XIfvKR2VxZxOHSc_6bKlPMXzY_vB1pmN96B3wOXB6C9buDRmXQ-UeyQZW2vRIvu6w2dJUUUap08ywhmnO9slRLb5sxSDKTSxY9bqIJp80zOdcxLdlXD8-UBlw3w9A",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1781792389.123996,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:5173",
+      "localStorage": [
+        {
+          "name": "isAuthenticated",
+          "value": "true"
+        }
+      ]
+    }
+  ]
+}
