@@ -11,6 +11,8 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.61.0-jammy
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,9 +34,6 @@ jobs:
 
       - name: Run Integration Tests (Vitest)
         run: npm run test
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
 
       - name: Run E2E Tests (Playwright)
         run: npm run test:e2e
