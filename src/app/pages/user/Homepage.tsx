@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PageLayout } from "../../components/ui/PageLayout";
 import { Button } from "../../components/ui/Button";
 import { StatusBadge } from "../../components/ui/StatusBadge";
-import { Home, LogOut, FileClock, ChevronRight } from "lucide-react";
+import { Home, LogOut, FileClock } from "lucide-react";
 import { getUserImageHistory } from "../../../api/dental";
 import { logoutUser } from "../../../api/auth";
 
@@ -166,32 +166,54 @@ export function Homepage() {
           </div>
 
           {/* Right Side - Tooth Character */}
-          <div className="flex-shrink-0 relative mt-8 md:mt-0">
-            <div className="relative w-48 h-48">
-              <div className="absolute inset-0 bg-blue-200 rounded-full opacity-50"></div>
+          <div className="flex-shrink-0 mt-8 md:mt-0">
+            <div className="w-80">
 
-              <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full">
-                <path
-                  d="M 30,35 Q 30,25 40,25 L 60,25 Q 70,25 70,35 L 70,60 Q 70,70 65,75 Q 60,75 60,70 L 60,65 Q 55,70 50,70 Q 45,70 40,65 L 40,70 Q 40,75 35,75 Q 30,70 30,60 Z"
-                  fill="white"
-                  stroke="#00004d"
-                  strokeWidth="2"
-                />
-                <circle cx="42" cy="45" r="3" fill="#00004d" />
-                <circle cx="58" cy="45" r="3" fill="#00004d" />
-                <path d="M 40,52 Q 50,58 60,52" fill="none" stroke="#00004d" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="75" cy="45" r="8" fill="none" stroke="#00004d" strokeWidth="2" />
-                <line x1="81" y1="51" x2="88" y2="58" stroke="#00004d" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-              <button
-                onClick={() => navigate('/upload')}
-                className="absolute bottom-0 right-0 bg-[#00004d] text-white rounded-full p-3 hover:opacity-90 transition-opacity shadow-lg cursor-pointer"
-              >
-                <ChevronRight className="w-6 h-6" strokeWidth={3} />
-              </button>
+              <div className="w-80">
+                <button
+                  onClick={() => navigate('/upload')}
+                  className="
+                    w-full
+                    h-64
+                    border-2
+                    border-dashed
+                    border-[#00004d]/30
+                    rounded-3xl
+                    bg-white/60
+                    backdrop-blur-sm
+                    hover:bg-white/80
+                    transition-all
+                    flex
+                    flex-col
+                    items-center
+                    justify-center
+                    cursor-pointer
+                  "
+                >
+                  <svg
+                    width="60"
+                    height="60"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#00004d"
+                    strokeWidth="2"
+                  >
+                    <path d="M12 16V4" />
+                    <path d="M8 8L12 4L16 8" />
+                    <path d="M20 16v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2" />
+                  </svg>
+
+                  <h3 className="mt-4 text-xl font-bold text-[#00004d]">
+                    Upload Dental Image
+                  </h3>
+
+                  <p className="text-sm text-[#00004d]/60 mt-2 px-8">
+                    Select a dental photograph to begin AI-powered calculus detection.
+                  </p>
+                </button>
+              </div>
             </div>
           </div>
-
         </div>
       </div>
     </PageLayout>
