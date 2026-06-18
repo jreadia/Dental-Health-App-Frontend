@@ -9,8 +9,8 @@ test.describe('Authentication Flow (Real API)', () => {
     // matching the TEST_USER_EMAIL and TEST_USER_PASSWORD in your production app!
     await page.goto('/login'); // Assuming /login works, or just /
 
-    await page.getByPlaceholder('Email').fill(process.env.TEST_USER_EMAIL || '');
-    await page.getByPlaceholder('Password').fill(process.env.TEST_USER_PASSWORD || '');
+    await page.getByPlaceholder('Email').fill(process.env.TEST_USER_EMAIL as string);
+    await page.getByPlaceholder('Password').fill(process.env.TEST_USER_PASSWORD as string);
     
     await page.getByRole('button', { name: 'Login' }).click();
 

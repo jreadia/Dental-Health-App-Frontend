@@ -5,8 +5,8 @@ const authFile = 'playwright/.auth/user.json';
 setup('authenticate', async ({ page }) => {
   // Perform a REAL login to generate the session state
   await page.goto('/');
-  await page.getByPlaceholder('Email').fill('e2e-tester@example.com');
-  await page.getByPlaceholder('Password').fill('password123');
+  await page.getByPlaceholder('Email').fill(process.env.TEST_USER_EMAIL as string);
+  await page.getByPlaceholder('Password').fill(process.env.TEST_USER_PASSWORD as string);
   await page.getByRole('button', { name: 'Login' }).click();
 
   // Wait for the login to succeed and navigate to homepage
