@@ -62,7 +62,7 @@ Navigate to `http://localhost:5173/` to view the application in your browser.
 
 3. **Environment Variables (For Testing)**
 
-To run the End-to-End tests against the real API, you must configure a test user account.
+To run the End-to-End tests against the real API.
 
 Copy the `.env.example` file to create a local `.env` file:
 
@@ -70,7 +70,7 @@ Copy the `.env.example` file to create a local `.env` file:
 cp .env.example .env
 ```
 
-Then, edit `.env` and fill in the `TEST_USER_EMAIL` and `TEST_USER_PASSWORD` with a valid registered account.
+Then, edit `.env` and fill in the requirements with valid credentials.
 
 4. **Testing**
 
@@ -85,6 +85,7 @@ Before running E2E tests for the first time, you must install the Playwright bro
 
 ```bash
 npx playwright install
+# To ensure tests run sequentially on Chromium to avoid backend rate limits:
 npm run test:e2e
 ```
 

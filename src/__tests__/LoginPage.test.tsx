@@ -26,12 +26,15 @@ describe('LoginPage Component', () => {
 
     render(<MemoryRouter><LoginPage /></MemoryRouter>);
 
-    fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'test@example.com' } });
-    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
+    const email = 'mockuser@example.com';
+    const password = 'mockpassword123';
+
+    fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: email } });
+    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: password } });
     fireEvent.click(screen.getByRole('button', { name: 'Login' }));
 
     await waitFor(() => {
-      expect(authApi.loginUser).toHaveBeenCalledWith({ email: 'test@example.com', password: 'password123' });
+      expect(authApi.loginUser).toHaveBeenCalledWith({ email, password });
     });
   });
 
@@ -40,7 +43,8 @@ describe('LoginPage Component', () => {
 
     render(<MemoryRouter><LoginPage /></MemoryRouter>);
 
-    fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'test@example.com' } });
+    const email = 'mockuser@example.com';
+    fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: email } });
     fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'wrong' } });
     fireEvent.click(screen.getByRole('button', { name: 'Login' }));
 
