@@ -60,7 +60,19 @@ npm run dev
 
 Navigate to `http://localhost:5173/` to view the application in your browser.
 
-3. **Testing**
+3. **Environment Variables (For Testing)**
+
+To run the End-to-End tests against the real API, you must configure a test user account.
+
+Copy the `.env.example` file to create a local `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+Then, edit `.env` and fill in the `TEST_USER_EMAIL` and `TEST_USER_PASSWORD` with a valid registered account.
+
+4. **Testing**
 
 **Unit & Component Tests (Vitest)**
 
@@ -78,7 +90,7 @@ npm run test:e2e
 
 > **Note on CI/CD:** Our GitHub Actions workflow (`ci.yml`) runs Playwright tests using the official Playwright Docker container for faster execution. If you ever update the `@playwright/test` version in `package.json`, you **must** also update the Docker image tag in `.github/workflows/ci.yml` to match!
 
-4. **Build for production**
+5. **Build for production**
 
 ```bash
 npm run build

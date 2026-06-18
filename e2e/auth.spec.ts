@@ -6,11 +6,11 @@ test.describe('Authentication Flow (Real API)', () => {
 
   test('user can log in with valid credentials', async ({ page }) => {
     // IMPORTANT: For this test to pass, you must manually register an account
-    // with email 'e2e-tester@example.com' and password 'password123' in your production app!
+    // matching the TEST_USER_EMAIL and TEST_USER_PASSWORD in your production app!
     await page.goto('/login'); // Assuming /login works, or just /
 
-    await page.getByPlaceholder('Email').fill('e2e-tester@example.com');
-    await page.getByPlaceholder('Password').fill('password123');
+    await page.getByPlaceholder('Email').fill(process.env.TEST_USER_EMAIL || '');
+    await page.getByPlaceholder('Password').fill(process.env.TEST_USER_PASSWORD || '');
     
     await page.getByRole('button', { name: 'Login' }).click();
 
