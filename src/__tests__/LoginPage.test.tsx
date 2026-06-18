@@ -23,13 +23,13 @@ describe('LoginPage Component', () => {
 
   it('calls loginUser and navigates on successful login', async () => {
     vi.mocked(authApi.loginUser).mockResolvedValueOnce({});
-    
+
     render(<MemoryRouter><LoginPage /></MemoryRouter>);
-    
+
     fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
     fireEvent.click(screen.getByRole('button', { name: 'Login' }));
-    
+
     await waitFor(() => {
       expect(authApi.loginUser).toHaveBeenCalledWith({ email: 'test@example.com', password: 'password123' });
     });
@@ -37,13 +37,13 @@ describe('LoginPage Component', () => {
 
   it('shows error message on failed login', async () => {
     vi.mocked(authApi.loginUser).mockRejectedValueOnce(new Error('Invalid credentials.'));
-    
+
     render(<MemoryRouter><LoginPage /></MemoryRouter>);
-    
+
     fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'wrong' } });
     fireEvent.click(screen.getByRole('button', { name: 'Login' }));
-    
+
     await waitFor(() => {
       expect(screen.getByText('Invalid credentials.')).toBeInTheDocument();
     });

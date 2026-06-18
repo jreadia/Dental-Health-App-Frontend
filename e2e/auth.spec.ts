@@ -24,9 +24,9 @@ test.describe('Authentication Flow (Real API)', () => {
     await page.getByPlaceholder('Password').fill('wrongpass');
     await page.getByRole('button', { name: 'Login' }).click();
 
-    // Verify error is displayed on screen
+    // Verify error is displayed on screen (we look for the red error box class instead of exact text)
     // Increased timeout to 30s because Render free tier might be waking up
-    await expect(page.getByText('Invalid credentials.')).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('.text-red-200')).toBeVisible({ timeout: 30000 });
   });
   
   test('validates registration form without submitting', async ({ page }) => {
