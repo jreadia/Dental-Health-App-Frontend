@@ -14,20 +14,22 @@ interface HistoryItem {
   status: string;
 }
 
+export const MAX_RECENT_SCANS = 3;
+
 export function Homepage() {
   const navigate = useNavigate();
   const [isFetchingImage, setIsFetchingImage] = useState(false);
   const [history, setHistory] = useState<HistoryItem[]>(() => {
     const cachedHistory = sessionStorage.getItem('dentalHistory');
     const parsed = cachedHistory ? JSON.parse(cachedHistory) : [];
-    return parsed.slice(0, 1);
+    return parsed.slice(0, MAX_RECENT_SCANS);
   });
 
   useEffect(() => {
     // Prevent redundant Firebase reads to save free tier quotas
     if (history.length > 0) return;
 
-    getUserImageHistory(1)
+    getUserImageHistory(MAX_RECENT_SCANS)
       .then((data: unknown) => {
         if (Array.isArray(data)) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -50,7 +52,7 @@ export function Homepage() {
               status: item.mlResults?.overall_diagnosis || "Healthy"
             };
           });
-          const sorted = fetchedHistory.reverse().slice(0, 1);
+          const sorted = fetchedHistory.reverse().slice(0, MAX_RECENT_SCANS);
           setHistory(sorted);
           sessionStorage.setItem('dentalHistory', JSON.stringify(sorted));
         }
@@ -137,7 +139,7 @@ export function Homepage() {
             {/* History List Section */}
             <div className="w-full max-w-md">
               <h3 className="text-[#00004d] font-bold text-lg mb-3 flex items-center gap-2">
-                <FileClock className="w-5 h-5" /> Most Recent Scan
+                <FileClock className="w-5 h-5" /> Recent Scans
               </h3>
 
               {history.length > 0 ? (

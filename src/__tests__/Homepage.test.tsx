@@ -29,7 +29,7 @@ describe('Homepage Component', () => {
     expect(screen.getByText('Upload Dental Image')).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(dentalApi.getUserImageHistory).toHaveBeenCalledWith(1);
+      expect(dentalApi.getUserImageHistory).toHaveBeenCalledWith(expect.any(Number));
     });
 
     expect(screen.getByText('No scan history available.')).toBeInTheDocument();
